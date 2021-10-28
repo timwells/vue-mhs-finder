@@ -4,30 +4,15 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 const routes = [
   {
-    path: '/',
-    redirect: '/find-gp'
+    path: '/find-by-location',
+    name: 'FindByLocation',
+    component: () => import('../views/FindByLocation.vue')
   },
   {
-    path: '/find-gp',
-    name: 'FindGP',
-    component: () => import('../views/FindGP.vue')
-  },
-  {
-    path: '/find-gp-search-results',
-    name: 'FindGPSearchResults',
-    component: () => import('../views/FindGPSearchResults.vue')
-  },
-  {
-    path: '/find-mental-health-provider-search-results',
-    name: 'FindMentalHealthResults',
-    component: () => import('../views/FindMentalHealthResults.vue')
-  },
-  {
-    path: '/data-explorer',
-    name: 'DataExplorer',
-    component: () => import('../views/explorer/Explorer.vue')
-  },
-  
+    path: '/finder-results',
+    name: 'FinderResults',
+    component: () => import('../views/FinderResults.vue')
+  }
 ]
 
 const router = new VueRouter({

@@ -3,7 +3,7 @@
     <div class="nhsuk-width-container nhsuk-header__container">
       <div class="nhsuk-header__logo">
         <a class="nhsuk-header__link"
-          href="/find-gp"
+          href="#"
           aria-label="NHS homepage">
           <svg
             class="nhsuk-logo"
@@ -22,6 +22,141 @@
         </a>
       </div>
       <span class="small">&nbsp;{{version}}</span>
+
+      <div class="nhsuk-header__content" id="content-header">
+        <div class="nhsuk-header__menu">
+          <button
+            class="nhsuk-header__menu-toggle"
+            id="toggle-menu"
+            aria-controls="header-navigation"
+            aria-label="Open menu"
+          >
+            Menu
+          </button>
+        </div>
+
+        <div class="nhsuk-header__search">
+          <button
+            class="nhsuk-header__search-toggle"
+            id="toggle-search"
+            aria-controls="search"
+            aria-label="Open search"
+          >
+            <svg
+              class="nhsuk-icon nhsuk-icon__search"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M19.71 18.29l-4.11-4.1a7 7 0 1 0-1.41 1.41l4.1 4.11a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 10a5 5 0 1 1 5 5 5 5 0 0 1-5-5z"
+              ></path>
+            </svg>
+            <span class="nhsuk-u-visually-hidden">Search</span>
+          </button>
+          <div class="nhsuk-header__search-wrap" id="wrap-search">
+            <form
+              class="nhsuk-header__search-form"
+              id="search"
+              action="https://www.nhs.uk/search/"
+              method="get"
+              role="search"
+            >
+              <label class="nhsuk-u-visually-hidden" for="search-field"
+                >Search the NHS website</label
+              >
+              <div class="autocomplete-container" id="autocomplete-container">
+                <div class="autocomplete__wrapper">
+                  <div
+                    style="
+                      border: 0px;
+                      clip: rect(0px, 0px, 0px, 0px);
+                      height: 1px;
+                      margin-bottom: -1px;
+                      margin-right: -1px;
+                      overflow: hidden;
+                      padding: 0px;
+                      position: absolute;
+                      white-space: nowrap;
+                      width: 1px;
+                    "
+                  >
+                    <div
+                      id="search-field__status--A"
+                      role="status"
+                      aria-atomic="true"
+                      aria-live="polite"
+                    ></div>
+                    <div
+                      id="search-field__status--B"
+                      role="status"
+                      aria-atomic="true"
+                      aria-live="polite"
+                    ></div>
+                  </div>
+                  <input
+                    aria-expanded="false"
+                    aria-owns="search-field__listbox"
+                    aria-autocomplete="list"
+                    aria-describedby="search-field__assistiveHint"
+                    autocomplete="off"
+                    class="autocomplete__input autocomplete__input--default"
+                    id="search-field"
+                    name="q"
+                    placeholder="Search"
+                    type="text"
+                    role="combobox"
+                  />
+                  <ul
+                    class="
+                      autocomplete__menu
+                      autocomplete__menu--inline
+                      autocomplete__menu--hidden
+                    "
+                    id="search-field__listbox"
+                    role="listbox"
+                  ></ul>
+                  <span id="search-field__assistiveHint" style="display: none"
+                    >When autocomplete results are available use up and down
+                    arrows to review and enter to select. Touch device users,
+                    explore by touch or with swipe gestures.</span
+                  >
+                </div>
+              </div>
+
+              <button class="nhsuk-search__submit" type="submit">
+                <svg
+                  class="nhsuk-icon nhsuk-icon__search"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M19.71 18.29l-4.11-4.1a7 7 0 1 0-1.41 1.41l4.1 4.11a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 10a5 5 0 1 1 5 5 5 5 0 0 1-5-5z"
+                  ></path>
+                </svg>
+                <span class="nhsuk-u-visually-hidden">Search</span>
+              </button>
+              <button class="nhsuk-search__close" id="close-search">
+                <svg
+                  class="nhsuk-icon nhsuk-icon__close"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M13.41 12l5.3-5.29a1 1 0 1 0-1.42-1.42L12 10.59l-5.29-5.3a1 1 0 0 0-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.29-5.3 5.29 5.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"
+                  ></path>
+                </svg>
+                <span class="nhsuk-u-visually-hidden">Close search</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
 
     <nav
@@ -56,7 +191,7 @@
               nhsuk-header__navigation-item--for-mobile
             "
           >
-            <a class="nhsuk-header__navigation-link" href="">
+            <a class="nhsuk-header__navigation-link" href="https://www.nhs.uk/">
               Home
               <svg
                 class="nhsuk-icon nhsuk-icon__chevron-right"
@@ -73,7 +208,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href=""
+              href="https://www.nhs.uk/conditions/"
             >
               Health A-Z
               <svg
@@ -91,7 +226,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href=""
+              href="https://www.nhs.uk/live-well/"
             >
               Live Well
               <svg
@@ -109,7 +244,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href=""
+              href="https://www.nhs.uk/mental-health/"
             >
               Mental health
               <svg
@@ -127,7 +262,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href=""
+              href="https://www.nhs.uk/conditions/social-care-and-support-guide/"
             >
               Care and support
               <svg
@@ -145,7 +280,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href=""
+              href="https://www.nhs.uk/pregnancy/"
             >
               Pregnancy
               <svg
@@ -163,7 +298,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href=""
+              href="https://www.nhs.uk/nhs-services/"
             >
               NHS services
               <svg
@@ -178,9 +313,6 @@
               </svg>
             </a>
           </li>
-          <li>
-            <img src="@/assets/data-explorer.png" style="float:right;width:30px;height:30px;cursor:pointer;margin-top: 12px;" @click="exploreData()">
-          </li>
         </ul>
       </div>
     </nav>
@@ -194,21 +326,14 @@ export default {
   name: "Header",
   computed: {
     ...mapState("app", ["version"]),
-  },
-  methods: {
-    exploreData() {
-      this.$router.push({ name: "DataExplorer" });
-    }
   }
-}
+};
 </script>
 
 
 <style>
 span.small {
-  color : yellow;
-  font-size: 14px;
-  font-weight: 600;
-  padding-top: 10px;
+  color: white;
+  font-size: smaller;
 }
 </style>
