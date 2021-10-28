@@ -1,0 +1,42 @@
+[
+  {
+    "OrganisationName": "Hillingdon Talking Therapies (IAPT)",
+    "phone": "01895 206800",
+    "email": "hillingdontalkingtherapies.cnwl@nhs.net"
+  },
+  {
+    "OrganisationName": "Ealing IAPT",
+    "phone": "020 3313 5660",
+    "email": "ealing.iapt@nhs.net"
+  },
+  {
+    "OrganisationName": "Harrow Talking Therapies (IAPT)",
+    "phone": "020 8515 5015",
+    "email": "harrow.iapt@nhs.net"
+  },
+  {
+    "OrganisationName": "Hounslow IAPT",
+    "phone": "0300 123 0739",
+    "email": "HOUCCG.hounslowiapt@nhs.net"
+  },
+  {
+    "OrganisationName": "Brent Talking Therapies (IAPT)",
+    "phone": "020 8206 3924",
+    "email": "brent.iapt@nhs.net"
+  },
+  {
+    "OrganisationName": "Community Living Well- Talking Therapies Service (IAPT)",
+    "phone": "020 3317 4200",
+    "email": "cnw-tr.clw@nhs.net"
+  },
+  {
+    "OrganisationName": "Back On Track",
+    "phone": "0300 123 1156",
+    "email": "Wlm-Tr.Backontrack@Nhs.Net"
+  },
+  {
+    "OrganisationName": "Westminster Talking Therapies (IAPT)",
+    "phone": "030 3333 0000",
+    "email": "westminster.iapt@nhs.net"
+  }
+]
