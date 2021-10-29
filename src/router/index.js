@@ -4,6 +4,10 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 const routes = [
   {
+    path: '/',
+    redirect: '/find-by-location'
+  },
+  {
     path: '/find-by-location',
     name: 'FindByLocation',
     component: () => import('../views/FindByLocation.vue')

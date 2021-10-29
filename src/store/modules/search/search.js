@@ -4,8 +4,8 @@ import axios from "axios";
 const _api = " http://api.getthedata.com/postcode/";
 
 const state = {
-  postCodeResult: {},
-  mhResults: [],
+  postCodeResult: null,
+  mhResults: null,
   mhTestCase: {}
 };
 
@@ -20,17 +20,25 @@ const mutations = {
 };
 
 const actions = {
+  // http://api.getthedata.com/postcode/SW1A+1AA
   getPostCode({ commit }, { postCode }) {
-    // http://api.getthedata.com/postcode/SW1A+1AA
+    commit("SET_POSTCODE", null);
     axios.get(_api + postCode).then(resp => {
-      console.log(resp.data);
       commit("SET_POSTCODE", resp.data.data);
     });
   },
-  postSearch({commit},{ testCase }) {    
-    commit("SET_MH_RESULTS", []);
+  postSearchByTestCase({commit}, { testCase }) {    
+    commit("SET_POSTCODE", null);
+    commit("SET_MH_RESULTS", null);
     commit("SET_MH_TESTCASE",testCase);
     axios.get(`/data/${testCase.name}.json`).then(resp => {
+      commit("SET_MH_RESULTS", resp.data);
+    });
+  },
+  postSearchByGeo({commit}) {    
+    commit("SET_MH_RESULTS", null);
+    commit("SET_MH_TESTCASE");
+    axios.get(`/data/PC1.json`).then(resp => {
       commit("SET_MH_RESULTS", resp.data);
     });
   }

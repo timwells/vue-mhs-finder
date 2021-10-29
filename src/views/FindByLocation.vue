@@ -3,71 +3,76 @@
     <main class="nhsuk-main-wrapper" id="main-content">
       <div class="nhsuk-grid-row">
         <div class="nhsuk-grid-column-two-thirds">
-            <h1>Find a Mental Health Service</h1>
-            <div name="ServiceSearchForm" id="service-search-form">
-              <input
-                type="hidden"
-                value="GPB"
-                data-val="true"
-                data-val-required="The ServiceId field is required."
-                id="ServiceId"
-                name="ServiceId"
-              />
-              <input
-                type="hidden"
-                id="UsersLatitude"
-                name="UsersLatitude"
-                value=""
-              />
-              <input
-                type="hidden"
-                id="UsersLongitude"
-                name="UsersLongitude"
-                value=""
-              />
-              <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="Location">Enter a town, city or postcode in England</label>
-                <input
-                  class="nhsuk-input nhsuk-input--width-20"
-                  type="text"
-                  id="Location"
-                  name="Location"
-                  value=""
-                  disabled
-                />
-              </div>
-              <button @click="onSearch" class="nhsuk-button nhsuk-u-margin-bottom-4" type="submit">Search</button>
-              <br />
-              <button class="nhsuk-button nhsuk-button--secondary geo-locate--button nhsuk-u-margin-bottom-7" disabled>
-                Use your location
-              </button>
-              <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="select-test-geo">Test Cases</label>
-                <select 
-                  v-model="selectedTestCase" 
-                  @change="onTestCaseSelection($event)" 
-                  class="nhsuk-select" id="select-test-geo" name="select-test-geo">
-                  <option v-for="testCase in testCases" :key="testCase.name" :value="testCase.id">{{ testCase.location }}</option>
-                </select>
-              </div>
+          <h1>Find a Mental Health Service</h1>
 
-              <div class="geo-locate">
-                <p class="geo-locate--searching nhsuk-u-margin-bottom-7">
-                  <!--img src=".loading.gif" alt="" /-->
-                  We are searching for your location
-                </p>
-                <p class="geo-locate--error nhsuk-u-margin-bottom-7">
-                  We can't find your location. Please try again or enter a town,
-                  city or postcode.
-                </p>
-                <p class="geo-locate--denied nhsuk-u-margin-bottom-7">
-                  You have not allowed us to use your location. You can change
-                  this in your browser settings.
-                </p>
-              </div>
-            </div>
+          <!--div class="nhsuk-form-group nhsuk-form-group--error">
+            <label class="nhsuk-label" for="example">Full name</label>
+            <span class="nhsuk-error-message" id="example-error">Enter your full name</span>
+            <input
+              class="nhsuk-input nhsuk-input--error"
+              id="example"
+              name="example"
+              type="text"
+              aria-describedby="example-error"
+            />
+          </div-->
+
+          <!--div :class="inputError ? 'nhsuk-form-group nhsuk-form-group--error': 'nhsuk-form-group'" -->
+          <div class="nhsuk-form-group" :class="inputError ? 'nhsuk-form-group--error': ''" >
+            <label class="nhsuk-label" for="Location"
+              >Enter a town, city or postcode in England</label>
+            <span v-if="inputError" class="nhsuk-error-message" id="example-error">Please enter a search value</span>
+            <input
+              class="nhsuk-input nhsuk-input--width-20"
+              type="text"
+              id="Location"
+              name="Location"
+              value=""
+              @keyup.enter="onSearchEnter($event)"
+              v-model="searchText"
+            />
+          </div>
+
+          <button
+            @click="onSearchClick"
+            class="nhsuk-button nhsuk-u-margin-bottom-4"
+            type="submit"
+          >
+            Search
+          </button>
+
+          <br />
+          <button
+            class="
+              nhsuk-button nhsuk-button--secondary
+              geo-locate--button
+              nhsuk-u-margin-bottom-7
+            "
+            disabled
+          >
+            Use your location
+          </button>
+          <div class="nhsuk-form-group">
+            <label class="nhsuk-label" for="select-test-geo">Test Cases</label>
+            <select
+              v-model="selectedTestCase"
+              @change="onTestCaseSelection($event)"
+              id="select-test-geo"
+              name="select-test-geo"
+            >
+              <option
+                v-for="testCase in testCases"
+                :key="testCase.name"
+                :value="testCase.id"
+              >
+                {{ testCase.location }}
+              </option>
+            </select>
+
+            <button type="button" @click="onTestCaseSearchClick">Go</button>
           </div>
         </div>
+      </div>
     </main>
   </div>
 </template>
@@ -77,81 +82,120 @@ import { mapState } from "vuex";
 
 const TEST_CASES = [
   {
-    id:0,
+    id: 0,
     name: "TC0",
     location: "North - Surrey Heartlands",
     lng: 51.41404043234957,
-    lat: -0.48989128125001
+    lat: -0.48989128125001,
   },
   {
-    id:1,
+    id: 1,
     name: "TC1",
     location: "East - Surrey Heartlands",
     lng: 51.238119518392004,
-    lat: -0.017479171875010024
+    lat: -0.017479171875010024,
   },
   {
-    id:2,
+    id: 2,
     name: "TC2",
     location: "South - Surrey Heartlands",
     lng: 51.13138109936718,
-    lat:-0.362175216796885
+    lat: -0.362175216796885,
   },
   {
-    id:3,
+    id: 3,
     name: "TC3",
     location: "West - Surrey Heartlands",
     lng: 51.26304687878365,
-    lat: -0.65193962109376
+    lat: -0.65193962109376,
   },
   {
-    id:4,
-    name:"TC4",
-    location:"Milton Keynes",
+    id: 4,
+    name: "TC4",
+    location: "Milton Keynes",
     lat: 52.057825072574346,
-    lng: -0.71785758984376
+    lng: -0.71785758984376,
   },
   {
-    id:5,
+    id: 5,
     name: "TC5",
     location: "Luton",
     lat: 51.9098123551845,
-    lng: -0.43770622265626
+    lng: -0.43770622265626,
   },
   {
     id: 6,
     name: "TC6",
-    location: "Beford",
+    location: "Bedford",
     lat: 52.119001391736006,
-    lng: -0.3958208466796975	
-  }
-]
+    lng: -0.3958208466796975,
+  },
+];
 
 export default {
   name: "FindByLocation",
-    computed: {
-    ...mapState("search", ["postCodeResult"])
+  computed: {
+    ...mapState("search", ["postCodeResult", "mhResults"]),
   },
-  methods:{
-    onSearch() {
-      // this.$store.dispatch("search/getPostCode", {postCode : "SW1A+1AA"});
-      this.$store.dispatch("search/postSearch",{ testCase : this.testCases[this.selectedTestCase] });
-      this.$router.push({ name:'FinderResults' })
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    postCodeResult(n, o) {
+      if (n !== null) {
+        this.$store.dispatch("search/postSearchByGeo");
+      }
+    },
+    // eslint-disable-next-line no-unused-vars
+    mhResults(n, o) {
+      if (n !== null) {
+        // Result Available -> route to display
+        this.$router.push({ name: "FinderResults" });
+      }
+    },
+  },
+  methods: {
+    // eslint-disable-next-line no-unused-vars
+    onSearchEnter(event) {
+      if (this.searchText.length > 0) {
+        this.inputError = false;
+        this.$store.dispatch("search/getPostCode", {
+          postCode: this.searchText,
+        });
+      }
+      else {
+        this.inputError = true;
+      }
+    },
+    onSearchClick() {
+      if (this.searchText.length > 0) {
+        this.inputError = false;
+        this.$store.dispatch("search/getPostCode", {
+          postCode: this.searchText
+        });
+      }
+      else {
+        this.inputError = true;
+      }
+    },
+    onTestCaseSearchClick() {
+      this.$store.dispatch("search/postSearchByTestCase", {
+        testCase: this.testCases[this.selectedTestCase],
+      });
     },
     onTestCaseSelection(event) {
       this.selectedTestCase = event.target.value;
-    }
+    },
   },
   data: () => ({
+    searchText: "",
     selectedTestCase: 0,
-    testCases: TEST_CASES
+    testCases: TEST_CASES,
+    inputError: false
   }),
   mounted() {
-
-
-  }
-}
+    this.searchText = "";
+    this.selectedTestCase = 0;
+  },
+};
 </script>
 
-<style>
-</style>
+<style></style>
