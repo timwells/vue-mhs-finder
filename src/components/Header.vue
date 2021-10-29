@@ -3,7 +3,7 @@
     <div class="nhsuk-width-container nhsuk-header__container">
       <div class="nhsuk-header__logo">
         <a class="nhsuk-header__link"
-          href="#"
+          href=""
           aria-label="NHS homepage">
           <svg
             class="nhsuk-logo"
@@ -59,7 +59,7 @@
             <form
               class="nhsuk-header__search-form"
               id="search"
-              action="https://www.nhs.uk/search/"
+              action="#"
               method="get"
               role="search"
             >
@@ -191,7 +191,7 @@
               nhsuk-header__navigation-item--for-mobile
             "
           >
-            <a class="nhsuk-header__navigation-link" href="https://www.nhs.uk/">
+            <a class="nhsuk-header__navigation-link" href="">
               Home
               <svg
                 class="nhsuk-icon nhsuk-icon__chevron-right"
@@ -208,7 +208,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href="https://www.nhs.uk/conditions/"
+              href=""
             >
               Health A-Z
               <svg
@@ -226,7 +226,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href="https://www.nhs.uk/live-well/"
+              href=""
             >
               Live Well
               <svg
@@ -244,7 +244,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href="https://www.nhs.uk/mental-health/"
+              href=""
             >
               Mental health
               <svg
@@ -262,7 +262,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href="https://www.nhs.uk/conditions/social-care-and-support-guide/"
+              href=""
             >
               Care and support
               <svg
@@ -280,7 +280,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href="https://www.nhs.uk/pregnancy/"
+              href=""
             >
               Pregnancy
               <svg
@@ -298,7 +298,7 @@
           <li class="nhsuk-header__navigation-item">
             <a
               class="nhsuk-header__navigation-link"
-              href="https://www.nhs.uk/nhs-services/"
+              href=""
             >
               NHS services
               <svg
