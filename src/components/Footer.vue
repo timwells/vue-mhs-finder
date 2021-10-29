@@ -7,63 +7,63 @@
           <li class="nhsuk-footer__list-item">
             <a
               class="nhsuk-footer__list-item-link"
-              href="https://www.nhs.uk/nhs-sites/"
+              href=""
               >NHS sites</a
             >
           </li>
           <li class="nhsuk-footer__list-item">
             <a
               class="nhsuk-footer__list-item-link"
-              href="https://www.nhs.uk/nhs-app/"
+              href=""
               >NHS App</a
             >
           </li>
           <li class="nhsuk-footer__list-item">
             <a
               class="nhsuk-footer__list-item-link"
-              href="https://www.nhs.uk/about-us/"
+              href=""
               >About us</a
             >
           </li>
           <li class="nhsuk-footer__list-item">
             <a
               class="nhsuk-footer__list-item-link"
-              href="https://www.nhs.uk/contact-us/"
+              href=""
               >Contact us</a
             >
           </li>
           <li class="nhsuk-footer__list-item">
             <a
               class="nhsuk-footer__list-item-link"
-              href="https://www.nhs.uk/personalisation/login.aspx"
+              href=""
               >Profile editor login</a
             >
           </li>
           <li class="nhsuk-footer__list-item">
             <a
               class="nhsuk-footer__list-item-link"
-              href="https://www.nhs.uk/about-us/site-map/"
+              href=""
               >Site map</a
             >
           </li>
           <li class="nhsuk-footer__list-item">
             <a
               class="nhsuk-footer__list-item-link"
-              href="https://www.nhs.uk/accessibility-statement/"
+              href=""
               >Accessibility statement</a
             >
           </li>
           <li class="nhsuk-footer__list-item">
             <a
               class="nhsuk-footer__list-item-link"
-              href="https://www.nhs.uk/our-policies/"
+              href=""
               >Our policies</a
             >
           </li>
           <li class="nhsuk-footer__list-item">
             <a
               class="nhsuk-footer__list-item-link"
-              href="https://www.nhs.uk/our-policies/cookies-policy/"
+              href=""
               >Cookies</a
             >
           </li>
