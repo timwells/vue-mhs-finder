@@ -53,7 +53,7 @@
             Use your location
           </button>
           <div class="nhsuk-form-group">
-            <label class="nhsuk-label" for="select-test-geo">Test Cases</label>
+            <label class="nhsuk-label" for="select-test-geo">Citizen Location - Test Cases</label>
             <select
               v-model="selectedTestCase"
               @change="onTestCaseSelection($event)"
