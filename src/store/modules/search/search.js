@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// http://api.getthedata.com/postcode/SW1A+1AA
-const _api = " http://api.getthedata.com/postcode/";
+// https://api.getthedata.com/postcode/SW1A+1AA
+const _api = " https://api.getthedata.com/postcode/";
 
 const state = {
   postCodeResult: null,
