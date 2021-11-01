@@ -1,9 +1,13 @@
 import axios from "axios";
 
 // https://api.getthedata.com/postcode/SW1A+1AA
-const _api = "https://api.getthedata.com/postcode/";
+const _api1 = "https://api.getthedata.com/postcode/";
 const _api2 = "https://api.nhs.uk/service-search/search?api-version=2";
 const _api3 = "https://catchment-area-service.azurewebsites.net/eligibilityregion/fake"
+
+// https://catchment-area-service.azurewebsites.net/serviceprovider/point?lat=51.3619384765625&lon=-0.5259902477264404
+const _api4 = "https://catchment-area-service.azurewebsites.net/serviceprovider/point"
+
 const _headers = {
   headers: {
     "subscription-key": "0649ea6318e9425eb972e2e4c385cdb9",
@@ -31,7 +35,7 @@ const mutations = {
   SET_POSTCODE: (state, payload) => (state.postCodeResult = payload),
   SET_MH_TESTCASE: (state, payload) => (state.mhTestCase = payload),
 
-  SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHEMENT_RESULTS: 
+  SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS: 
     (state, payload) => (state.mentalHealthProviderResults = payload),
 
   SET_GP_SEARCH_TERM: (state, payload) => (state.gpSearchTerm = payload),
@@ -44,7 +48,7 @@ const actions = {
   // http://api.getthedata.com/postcode/SW1A+1AA
   getPostCode({ commit }, { postCode }) {
     commit("SET_POSTCODE", null);
-    axios.get(_api + postCode).then(resp => {
+    axios.get(_api1 + postCode).then(resp => {
       commit("SET_POSTCODE", resp.data.data);
     });
   },
@@ -64,15 +68,13 @@ const actions = {
     });
   },
   resetFinder({commit}) {
-    console.log("resetFinder");
+    // console.log("resetFinder");
     commit("SET_GP_SEARCH_RESULTS", null);
     commit("SET_GP_SEARCH_TERM", "");
-    commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHEMENT_RESULTS", null);
+    commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
   },
   postSearchGP({commit},{ search }) {
-
-    console.log("postSearchGP:",search)
-    
+    // console.log("postSearchGP:",search)
     let reqParameters = {
         filter: "OrganisationTypeId eq 'GPB'",
         orderby: "OrganisationName",
@@ -88,19 +90,33 @@ const actions = {
     axios.post(_api2, reqParameters, _headers).then(resp => {
       commit("SET_GP_SEARCH_TERM", search);
       commit("SET_GP_SEARCH_RESULTS", resp.data.value);
-      console.log("postSearchGP:",resp.data.value);
+      // console.log("postSearchGP:",resp.data.value);
     });
   },
-  postSearchMentalHealthProvidersByCatchement({ commit }) {
-    commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHEMENT_RESULTS", null);
+  postSearchMentalHealthProvidersByCatchment({ commit }) {
+    commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
     axios.get(_api3).then(resp => {
-      commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHEMENT_RESULTS", resp.data);
+      // console.log("postSearchMentalHealthProvidersByCatchment:",resp.data)
+      commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHEMNT_RESULTS", resp.data);
+     });
+  },
+
+  getSearchMentalHealthProvidersByCatchment({ commit }, { lat, lng }) {
+    console.log("getSearchMentalHealthProvidersByCatchment","lat:",lat,"lng:", lng);
+    let _api = `${_api4}?lat=${lat}&lon=${lng}`
+    // https://catchment-area-service.azurewebsites.net/serviceprovider/point?lat=51.3619384765625&lon=-0.5259902477264404
+    console.log("getSearchMentalHealthProvidersByCatchment",_api);
+    commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
+    axios.get(_api).then(resp => {
+      // console.log("-->getSearchMentalHealthProvidersByCatchment:",resp.data)
+      commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", resp.data);
      });
   },
 
   getSearchCatchment({commit}) {
     commit("SET_IAPT_RESULTS", null);
     axios.get(_api3).then(resp => {
+      console.log(resp.data)
       commit("SET_IAPT_RESULTS", resp.data);
      });
   }
