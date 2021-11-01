@@ -42,17 +42,17 @@
               >
                 <hr />
                 <div>
-                  <h3 class="results__name">{{ provider.OrganisationName }}</h3>
+                  <h3 class="results__name">{{ provider.organisationName }}</h3>
                   <p class="results__website">
-                    <a>Visit<span class="nhsuk-u-visually-hidden">{{provider.OrganisationName}}</span>website</a>
+                    <a>Visit<span class="nhsuk-u-visually-hidden">{{provider.organisationName}}</span>website</a>
                   </p>
 
                   <p class="results__telephone">
-                    Telephone:<a href="#" class="telephone_tracking">99999</a>
+                    Telephone:<a href="#" class="telephone_tracking">{{provider.phone}}</a>
                   </p>
 
                   <p class="results__email">
-                    Email:<a href="mailto:hillingdontalkingtherapies.cnwl@nhs.net">name@name.org</a>
+                    Email:<a href="mailto:hillingdontalkingtherapies.cnwl@nhs.net">{{provider.phone}}</a>
                   </p>
 
                   <div class="nhsuk-action-link results__self__referral">
@@ -71,7 +71,7 @@
                       <span class="nhsuk-action-link__text"
                         >Refer yourself online<span
                           class="nhsuk-u-visually-hidden"
-                          >{{ provider.OrganisationName }}</span
+                          >{{ provider.organisationName }}</span
                         >
                       </span>
                     </a>
@@ -92,19 +92,12 @@ import { mapState } from "vuex";
 export default {
   name: "FindMentalHealthResults",
   computed: {
-    ...mapState("search", ["mentalHealthProviderResults"]),
+    ...mapState("search", [
+      "mentalHealthProviderResults"
+    ]),
   },
 };
 </script>
 
 <style>
-span.small-test-note {
-  color: yellow;
-  background-color: black;
-  font-size: smaller;
-}
-p.small-test-note {
-  color: green;
-  font-size: small;
-}
 </style>

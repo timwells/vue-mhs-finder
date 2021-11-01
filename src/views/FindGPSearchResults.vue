@@ -46,7 +46,6 @@
               </li>
             </ol>
           </div>
-          <!--pre>{{gpSearchResults}}</pre-->          
         </div>
       </div>
     </main>
@@ -59,10 +58,15 @@ import { mapState } from "vuex";
 export default {
   name: "FindGPSearchResults",
   computed: {
-    ...mapState("search", ["gpSearchResults","gpSearchTerm","mentalHealthProviderResults"])
+    ...mapState("search", [
+      "gpSearchResults",
+      "gpSearchTerm",
+      "mentalHealthProviderResults"
+    ])
   },
   watch: {
     mentalHealthProviderResults(n) {
+    console.log("mentalHealthProviderResults",n)
       if (n !== null) {
         // Result Available -> route to display
         this.$router.push({ name: "FindMentalHealthResults"});
@@ -71,12 +75,13 @@ export default {
   },
   methods: {
     gpLinkClicked(org, lat, lng) {
-      console.log("gpLinkClicked", org, lat, lng);
-      this.$store.dispatch("search/postSearchMentalHealthProvidersByCatchement", {
+      console.log("gpLinkClicked", org, lat, lng);      
+      this.$store.dispatch("search/getSearchMentalHealthProvidersByCatchment", {
           lat: lat,
           lng: lng,
       });
-    }
+
+}
   }
 };
 </script>
