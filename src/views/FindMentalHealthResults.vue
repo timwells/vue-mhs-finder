@@ -3,7 +3,7 @@
     <main id="main-content" class="nhsuk-main-wrapper">
       <div class="nhsuk-u-reading-width">
         <div class="nhsuk-back-link">
-          <router-link to="/find-gp-search-results">
+          <router-link to="/find-gp">
             <svg
               class="nhsuk-icon nhsuk-icon__chevron-left"
               xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,8 @@
           <h1>Contact a psychological therapies service</h1>
           <h2 class="nhsuk-body-l">
             <span role="text">
-              <span class="results__count">{{ mentalHealthProviderResults.length }}</span> service(s) are available for location.
+              <span class="results__count">{{ mentalHealthProviderResults.length }}</span>
+              service(s) are available for location.
             </span>
           </h2>
           <div class="nhsuk-inset-text">
@@ -31,24 +32,6 @@
             <p>You may not be eligible for the other services being shown.</p>
             <p>We are working to fix this as soon as possible.</p>
           </div>
-
-          <details class="nhsuk-details debug" nhsuk-polyfilled="true" id="nhsuk-details">
-            <summary class="nhsuk-details__summary" 
-              role="button" aria-controls="nhsuk-details__text0" tabindex="0" :aria-expanded="bPermissionNoteExapand">
-              <span class="nhsuk-details__summary-text">API Performance</span>
-            </summary>
-            <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
-                <p class="page-perf-debug"><b>API URL:</b> <json-viewer :value="request.url" :expand-depth="1" sort/></p>
-                <p class="page-perf-debug"><b>Full API Request:</b></p>
-                <json-viewer :value="request" :expand-depth="0" sort/>
-                <br>
-                <p class="page-perf-debug"><b>Full API Response:</b></p>
-                <json-viewer :value="response.data" :expand-depth="0" sort/>
-                <br>
-                <p class="page-perf-debug"><b>Req/Resp:</b> {{ mentalHealthProviderRespPerf }} ms</p>
-            </div>
-          </details>
-
           <div>
             <ol class="nhsuk-list inline-list">
               <li
@@ -59,31 +42,17 @@
               >
                 <hr />
                 <div>
-                  <h3 class="results__name">
-                    <span v-if="provider.organisationName">{{ provider.organisationName }}</span>
-                    <span v-else class="error-item">???</span>
-                    </h3>
+                  <h3 class="results__name">{{ provider.OrganisationName }}</h3>
                   <p class="results__website">
-                    <a href="#">Visit website
-                      <span class="nhsuk-u-visually-hidden">
-                        <span v-if="provider.website">{{provider.website}} website</span>
-                        <span v-else class="error-item">? website</span>
-                      </span>
-                    </a>
+                    <a>Visit<span class="nhsuk-u-visually-hidden">{{provider.OrganisationName}}</span>website</a>
                   </p>
 
-                  <p class="results__telephone">Telephone:
-                    <a href="#" class="telephone_tracking">
-                      <span v-if="provider.phone">{{provider.phone}}</span>
-                      <span v-else class="error-item">?</span>
-                    </a>
+                  <p class="results__telephone">
+                    Telephone:<a href="#" class="telephone_tracking">99999</a>
                   </p>
 
-                  <p class="results__email">Email:
-                    <a href="mailto:a@b.com">
-                      <span v-if="provider.email">{{provider.email}}</span>
-                      <span v-else class="error-item">?</span>
-                    </a>
+                  <p class="results__email">
+                    Email:<a href="mailto:hillingdontalkingtherapies.cnwl@nhs.net">name@name.org</a>
                   </p>
 
                   <div class="nhsuk-action-link results__self__referral">
@@ -100,44 +69,13 @@
                         ></path>
                       </svg>
                       <span class="nhsuk-action-link__text"
-                        >Refer yourself online<span class="nhsuk-u-visually-hidden" v-if="provider.organisationName">{{ provider.organisationName }}</span
+                        >Refer yourself online<span
+                          class="nhsuk-u-visually-hidden"
+                          >{{ provider.OrganisationName }}</span
                         >
                       </span>
                     </a>
                   </div>
-                  <details class="nhsuk-details debug" nhsuk-polyfilled="true" id="nhsuk-details">
-                    <summary class="nhsuk-details__summary" 
-                      role="button" aria-controls="nhsuk-details__text0" tabindex="0" :aria-expanded="bPermissionNoteExapand">
-                      <span class="nhsuk-details__summary-text">Debug section</span>
-                    </summary>
-                    <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
-                        <p class="debug">
-                            <span v-if="provider.organisationName">The organisation <b>{{ provider.organisationName}} </b>
-                              is one of the {{ mentalHealthProviderResults.length }} eligible IAPT Services available having:</span>
-                            <span v-else class="error-item">Organisation: <b>?</b></span>
-                        </p>
-                        <p class="debug">
-                          <span v-if="provider.odsCode>0">ODSCode: <b>{{ provider.odsCode }}</b></span>
-                          <span v-else class="error-item">ODSCode: <b>?</b></span>
-                        </p>
-                        <p class="debug">
-                          <span v-if="provider.referralURL">referralURL: <b>{{ provider.referralURL }}</b></span>
-                          <span v-else class="error-item">referralURL: <b>?</b></span>
-                        </p>
-                        <p class="debug">
-                          <span v-if="provider.website">Website<b>{{ provider.website }}</b></span>
-                          <span v-else class="error-item">Website: <b>?</b></span>
-                        </p>
-                        <p class="debug">
-                          <span v-if="provider.location">Latitude: <b>{{ provider.location.position.latitude }}</b></span>
-                          <span v-else class="error-item">Latitude: <b>?</b></span>                          
-                        </p> 
-                        <p class="debug">
-                          <span v-if="provider.location">Longitude: <b>{{ provider.location.position.longitude }}</b></span>
-                          <span v-else class="error-item">Longitude: <b>?</b></span>                          
-                        </p> 
-                    </div>
-                  </details>
                 </div>
               </li>
             </ol>
@@ -150,41 +88,23 @@
 
 <script>
 import { mapState } from "vuex";
-import JsonViewer from 'vue-json-viewer'
 
 export default {
   name: "FindMentalHealthResults",
-  components: {
-    JsonViewer
-  },
   computed: {
-    ...mapState("search", [
-      "mentalHealthProviderReqAPI",
-      "mentalHealthProviderRespPerf",
-      "mentalHealthProviderResults",
-      "request",
-      "response"
-    ]),
+    ...mapState("search", ["mentalHealthProviderResults"]),
   },
-  data: () => ({
-    bPermissionNoteExapand: false
-  }),
-  mounted() {
-    // If no result goto GP input step
-    if(!this.mentalHealthProviderResults) {
-      this.$router.push({ name: "FindGP" });
-    }
-  }
 };
 </script>
 
 <style>
-.page-perf-debug {
-  font-size: 14px;
-  font-weight: 400;
-  margin: 0;
+span.small-test-note {
+  color: yellow;
+  background-color: black;
+  font-size: smaller;
 }
-.error-item {
-  color: red;
+p.small-test-note {
+  color: green;
+  font-size: small;
 }
 </style>

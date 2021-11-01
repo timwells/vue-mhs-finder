@@ -15,29 +15,14 @@
             </svg>
           </router-link>
         </div>
-        <div v-if="gpSearchResults">
 
+        <div v-if="gpSearchResults">
           <h1>Select your GP to see available services</h1>
           <h2 class="nhsuk-body-l">
             <span role="text">
-              We found <span class="results__count">{{ gpSearchResults.length }}</span> GP surgeries using '{{gpSearchTerm}}'.
+              We found <span class="results__count">{{ gpSearchResults.length }}</span> GP surgeries using '{{gpSearchTerm}}''.
             </span>
           </h2>
-
-          <details class="nhsuk-details debug" nhsuk-polyfilled="true" id="nhsuk-details">
-            <summary class="nhsuk-details__summary" 
-              role="button" aria-controls="nhsuk-details__text0" tabindex="0" :aria-expanded="bPermissionNoteExapand">
-              <span class="nhsuk-details__summary-text">API Performance</span>
-            </summary>
-            <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
-                <p class="page-perf-debug"><b>API:</b> {{ gpSearchReqAPI }}</p>
-                <p class="page-perf-debug"><b>Request body:</b></p>
-                <json-viewer :value="gpSearchReqBody" :expand-depth="1" sort/>
-                <br>
-                <p class="page-perf-debug"><b>Req/Resp:</b> {{ gpSearchRespPerf }} ms</p>
-            </div>
-          </details>
-
           <p role="text">If your surgery is not here, check your spelling and <a class="results__search__again" href="/find-gp">search again</a>.</p>
           <div>
             <ol class="nhsuk-list inline-list">
@@ -50,47 +35,18 @@
                   <h3 class="results__name">
                     <span role="text">{{ gp.OrganisationName }}</span>
                   </h3>
-                  <div >
-                  <p style="display: inline-block; justify-content: space-between;" v-if="gp.Address1">
-                      {{gp.Address1}},
-                  </p>
-                  <p style="display: inline-block; justify-content: space-between;" v-if="gp.Address2">
-                       {{gp.Address2}},
-                  </p>
-                  <p style="display: inline-block; justify-content: space-between;" v-if="gp.Address3">
-                       {{gp.Address3}},
-                  </p>
-                  <p style="display: inline-block; justify-content: space-between;" v-if="gp.City">
-                       {{gp.City}},
-                  </p>
-                  <p style="display: inline-block; justify-content: space-between;" v-if="gp.Postcode">
-                       {{gp.Postcode}}
-                  </p>
-                  <details class="nhsuk-details debug" nhsuk-polyfilled="true" id="nhsuk-details">
-                    <summary class="nhsuk-details__summary" 
-                      role="button" aria-controls="nhsuk-details__text0" tabindex="0" :aria-expanded="bPermissionNoteExapand">
-                      <span class="nhsuk-details__summary-text">Debug section</span>
-                    </summary>
-                    <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
-                        <p class="debug">By clicking on <b><i>This is my GP</i></b>, the Ciziten is about to get all the eligible IAPT Services for the organisation <b>{{ gp.OrganisationName}}</b> having:
-                        <p class="debug">SearchKey: <b>{{gp.SearchKey}}</b></p>
-                        <p class="debug">ODSCode: <b>{{gp.ODSCode }}</b></p>
-                        <p class="debug">Latitude: <b>{{gp.Latitude}}</b></p> 
-                        <p class="debug">Longitude: <b>{{gp.Longitude}}</b></p>                 
-                    </div>
-                  </details>
-                </div>
+                  <p class="results__address" role="text">{{gp.Address1}},{{gp.Address2}},{{gp.City}},{{gp.Postcode}}</p>
                   <p>
                     <a @click="gpLinkClicked(gp.OrganisationName,gp.Latitude,gp.Longitude)">
                       <span class="nhsuk-u-visually-hidden">{{ gp.OrganisationName }}</span>
                       <span aria-hidden="true">This</span> is my GP
                     </a>
                   </p>
-                  <pulse-loader :loading="bLoading" :color="color" :size="size"></pulse-loader>
                 </div>
               </li>
             </ol>
           </div>
+          <!--pre>{{gpSearchResults}}</pre-->          
         </div>
       </div>
     </main>
@@ -99,31 +55,16 @@
 
 <script>
 import { mapState } from "vuex";
-import PulseLoader from "vue-spinner/src/PulseLoader.vue"
-
-import JsonViewer from 'vue-json-viewer'
 
 export default {
   name: "FindGPSearchResults",
-  components: {
-    PulseLoader,
-    JsonViewer
-  },
   computed: {
-    ...mapState("search", [
-      "gpSearchResults",
-      "gpSearchTerm",
-      "mentalHealthProviderResults",
-      "gpSearchReqAPI",
-      "gpSearchRespPerf",
-      "gpSearchReqBody"
-    ])
+    ...mapState("search", ["gpSearchResults","gpSearchTerm","mentalHealthProviderResults"])
   },
   watch: {
     mentalHealthProviderResults(n) {
-      if (n) {
-        // Results available -> route to display them
-        this.bLoading = false;
+      if (n !== null) {
+        // Result Available -> route to display
         this.$router.push({ name: "FindMentalHealthResults"});
       }
     }
@@ -131,22 +72,10 @@ export default {
   methods: {
     gpLinkClicked(org, lat, lng) {
       console.log("gpLinkClicked", org, lat, lng);
-      this.bLoading = true;
-      this.$store.dispatch("search/getSearchMentalHealthProvidersByCatchment", {
+      this.$store.dispatch("search/postSearchMentalHealthProvidersByCatchement", {
           lat: lat,
           lng: lng,
       });
-    }
-  },
-  data: () => ({
-    bPermissionNoteExapand: false,
-    bLoading: false,
-    color: '#005eb8',
-    size: '16px'
-  }),
-  mounted() {
-    if(!this.gpSearchResults) {
-      this.$router.push({ name: "FindGP" });
     }
   }
 };
@@ -154,11 +83,5 @@ export default {
 
 <style>
  a { cursor: pointer; }
- .debug {font-size: 14px;}
- 
- .page-perf-debug {
-  font-size: 14px;
-  font-weight: 400;
-  margin: 0;
-}
+
 </style>
