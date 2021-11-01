@@ -1,4 +1,4 @@
-const _version = "mh-0.4-alpha";
+const _version = "mh-poc-demo-alpha-0.1";
 const state = {
   version: _version,
 };
