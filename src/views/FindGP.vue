@@ -30,7 +30,7 @@
               @keyup.enter="onSearchEnter($event)"
               v-model="searchText"/>
             <p></p>
-            <details class="nhsuk-details" nhsuk-polyfilled="true" id="nhsuk-details" open="">
+            <details class="nhsuk-details" nhsuk-polyfilled="true" id="nhsuk-details">
               <summary class="nhsuk-details__summary" 
                 role="button" aria-controls="nhsuk-details__text0" tabindex="0" :aria-expanded="bPermissionNoteExapand">
                 <span class="nhsuk-details__summary-text">Does my GP need to know?</span>
@@ -50,7 +50,6 @@
         </button>
       </div>
     </main>
-    <!--pre>{{gpSearchResults}}</pre-->
   </div>
 </template>
 
@@ -78,7 +77,7 @@ export default {
     onSearchEnter(event) {
       if (this.searchText.length > 0) {
         this.inputError = false;
-        this.searchText = this.searchText.replace(' ','+');
+        // this.searchText = this.searchText.replace(' ','+');
         this.$store.dispatch("search/postSearchGP", {
           search: this.searchText,
         });
@@ -89,7 +88,7 @@ export default {
     onSearchClick() {
       if (this.searchText.length > 0) {
         this.inputError = false;
-        this.searchText = this.searchText.replace(' ','+');
+        // this.searchText = this.searchText.replace(' ','+');
         this.$store.dispatch("search/postSearchGP", {
           search: this.searchText,
         });
@@ -110,4 +109,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>
