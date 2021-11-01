@@ -4,24 +4,10 @@
       <div class="nhsuk-grid-row">
         <div class="nhsuk-grid-column-two-thirds">
           <h1>Find a Mental Health Service</h1>
-
-          <!--div class="nhsuk-form-group nhsuk-form-group--error">
-            <label class="nhsuk-label" for="example">Full name</label>
-            <span class="nhsuk-error-message" id="example-error">Enter your full name</span>
-            <input
-              class="nhsuk-input nhsuk-input--error"
-              id="example"
-              name="example"
-              type="text"
-              aria-describedby="example-error"
-            />
-          </div-->
-
-          <!--div :class="inputError ? 'nhsuk-form-group nhsuk-form-group--error': 'nhsuk-form-group'" -->
           <div class="nhsuk-form-group" :class="inputError ? 'nhsuk-form-group--error': ''" >
             <label class="nhsuk-label" for="Location"
               >Enter a town, city or postcode in England</label>
-            <span v-if="inputError" class="nhsuk-error-message" id="example-error">Please enter a search value</span>
+            <span v-if="inputError" class="nhsuk-error-message" id="example-error">You must enter a town, city or postcode to find a service</span>
             <input
               class="nhsuk-input nhsuk-input--width-20"
               type="text"
@@ -70,10 +56,20 @@
             </select>
 
             <button type="button" @click="onTestCaseSearchClick">Go</button>
+            <br/>
+            <button type="button" @click="onSearchGPClick">GPs</button>
+            <br/>
+            <button type="button" @click="onSearchIAPTCatchmentClick">IAPTs</button>
+
           </div>
         </div>
       </div>
     </main>
+
+    <pre>{{gpResults}}</pre>
+
+    <pre>{{iaptResults}}</pre>
+
   </div>
 </template>
 
@@ -135,7 +131,7 @@ const TEST_CASES = [
 export default {
   name: "FindByLocation",
   computed: {
-    ...mapState("search", ["postCodeResult", "mhResults"]),
+    ...mapState("search", ["postCodeResult", "mhResults","gpResults","iaptResults"]),
   },
   watch: {
     // eslint-disable-next-line no-unused-vars
@@ -184,6 +180,12 @@ export default {
     onTestCaseSelection(event) {
       this.selectedTestCase = event.target.value;
     },
+    onSearchGPClick() {
+       this.$store.dispatch("search/postSearchGP", {search: "rush"});
+    },
+    onSearchIAPTCatchmentClick() {
+       this.$store.dispatch("search/getSearchCatchment");
+    }
   },
   data: () => ({
     searchText: "",
