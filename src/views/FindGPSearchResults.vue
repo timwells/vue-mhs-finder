@@ -20,7 +20,7 @@
           <h1>Select your GP to see available services</h1>
           <h2 class="nhsuk-body-l">
             <span role="text">
-              We found <span class="results__count">{{ gpSearchResults.length }}</span> GP surgeries using '{{gpSearchTerm}}''.
+              We found <span class="results__count">{{ gpSearchResults.length }}</span> GP surgeries using '{{gpSearchTerm}}'.
             </span>
           </h2>
           <p role="text">If your surgery is not here, check your spelling and <a class="results__search__again" href="/find-gp">search again</a>.</p>
