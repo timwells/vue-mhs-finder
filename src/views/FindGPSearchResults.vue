@@ -35,7 +35,35 @@
                   <h3 class="results__name">
                     <span role="text">{{ gp.OrganisationName }}</span>
                   </h3>
-                  <p class="results__address" role="text">{{gp.Address1}},{{gp.Address2}},{{gp.City}},{{gp.Postcode}}</p>
+                  <div >
+                  <p style="display: inline-block; justify-content: space-between;" v-if="gp.Address1">
+                      {{gp.Address1}},
+                  </p>
+                  <p style="display: inline-block; justify-content: space-between;" v-if="gp.Address2">
+                       {{gp.Address2}},
+                  </p>
+                  <p style="display: inline-block; justify-content: space-between;" v-if="gp.Address3">
+                       {{gp.Address3}},
+                  </p>
+                  <p style="display: inline-block; justify-content: space-between;" v-if="gp.City">
+                       {{gp.City}},
+                  </p>
+                  <p style="display: inline-block; justify-content: space-between;" v-if="gp.Postcode">
+                       {{gp.Postcode}}
+                  </p>
+                  <details class="nhsuk-details debug" nhsuk-polyfilled="true" id="nhsuk-details">
+                    <summary class="nhsuk-details__summary" 
+                      role="button" aria-controls="nhsuk-details__text0" tabindex="0" :aria-expanded="bPermissionNoteExapand">
+                      <span class="nhsuk-details__summary-text">Debug section</span>
+                    </summary>
+                    <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
+                        <p class="debug">By clicking on <b><i>This is my GP</i></b>, the patient is about to get all the IAPT Services for the organisation <b>{{ gp.OrganisationName}}</b> having:
+                        <p class="debug">ODSCode: <b>{{ gp.ODSCode }}</b></p>
+                        <p class="debug">Latitude: <b>{{gp.Latitude}}</b></p> 
+                        <p class="debug">Longitude: <b>{{gp.Longitude}}</b></p>                 
+                    </div>
+                  </details>
+                </div>
                   <p>
                     <a @click="gpLinkClicked(gp.OrganisationName,gp.Latitude,gp.Longitude)">
                       <span class="nhsuk-u-visually-hidden">{{ gp.OrganisationName }}</span>
@@ -82,11 +110,14 @@ export default {
       });
 
 }
-  }
+  },
+  data: () => ({
+    bPermissionNoteExapand: false
+  })
 };
 </script>
 
 <style>
  a { cursor: pointer; }
-
+ .debug {font-size: 14px;}
 </style>
