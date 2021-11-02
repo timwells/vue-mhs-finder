@@ -2,16 +2,17 @@ import axios from "axios";
 
 // https://api.getthedata.com/postcode/SW1A+1AA
 const _api1 = "https://api.getthedata.com/postcode/";
-// const _api2 = "https://api.nhs.uk/service-search/search?api-version=2";
-const _api2 = "https://nhsuk-apim-int-uks.azure-api.net/service-search/organisationprofiles/search?api-version=1";
+const _api2 = "https://api.nhs.uk/service-search/search?api-version=2";
+// const _api2 = "https://nhsuk-apim-int-uks.azure-api.net/service-search/organisationprofiles/search?api-version=1";
 const _api3 = "https://catchment-area-service.azurewebsites.net/eligibilityregion/fake"
 
 // https://catchment-area-service.azurewebsites.net/serviceprovider/point?lat=51.3619384765625&lon=-0.5259902477264404
 const _api4 = "https://catchment-area-service.azurewebsites.net/serviceprovider/point"
 // public subscription 0649ea6318e9425eb972e2e4c385cdb9
+// INT subscription c8b0e93b72994848af9169bc4a174ee6
 const _headers = {
   headers: {
-    "subscription-key": "c8b0e93b72994848af9169bc4a174ee6",
+    "subscription-key": "0649ea6318e9425eb972e2e4c385cdb9",
     "Content-Type": "application/json"
   }
 };
