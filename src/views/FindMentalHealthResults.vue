@@ -19,8 +19,7 @@
           <h1>Contact a psychological therapies service</h1>
           <h2 class="nhsuk-body-l">
             <span role="text">
-              <span class="results__count">{{ mentalHealthProviderResults.length }}</span>
-              service(s) are available for location.
+              <span class="results__count">{{ mentalHealthProviderResults.length }}</span> service(s) are available for location.
             </span>
           </h2>
           <div class="nhsuk-inset-text">
@@ -32,6 +31,18 @@
             <p>You may not be eligible for the other services being shown.</p>
             <p>We are working to fix this as soon as possible.</p>
           </div>
+
+          <details class="nhsuk-details debug" nhsuk-polyfilled="true" id="nhsuk-details">
+            <summary class="nhsuk-details__summary" 
+              role="button" aria-controls="nhsuk-details__text0" tabindex="0" :aria-expanded="bPermissionNoteExapand">
+              <span class="nhsuk-details__summary-text">API Perf</span>
+            </summary>
+            <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
+                <p class="page-perf-debug">API: {{ mentalHealthProviderReqAPI }}</p>
+                <p class="page-perf-debug">Req/Resp: {{ mentalHealthProviderRespPerf }} ms</p>
+            </div>
+          </details>
+
           <div>
             <ol class="nhsuk-list inline-list">
               <li
@@ -82,10 +93,10 @@
                       <span class="nhsuk-details__summary-text">Debug section</span>
                     </summary>
                     <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
-                        <p class="debug">The organisation <b>{{ provider.organisationName}} </b>is one of the {{ mentalHealthProviderResults.length }} IAPT Services available having:
+                        <p class="debug">The organisation <b>{{ provider.organisationName}} </b>is one of the {{ mentalHealthProviderResults.length }} eligible IAPT Services available having:
                         <p class="debug">ODSCode: <b>{{ provider.odsCode }}</b></p>
                         <p class="debug">Latitude: <b>{{ provider.location.position.latitude }}</b></p> 
-                        <p class="debug">Longitude: <b>{{ provider.location.position.longitude }}</b></p>                 
+                        <p class="debug">Longitude: <b>{{ provider.location.position.longitude }}</b></p>
                     </div>
                   </details>
                 </div>
@@ -105,14 +116,27 @@ export default {
   name: "FindMentalHealthResults",
   computed: {
     ...mapState("search", [
+      "mentalHealthProviderReqAPI",
+      "mentalHealthProviderRespPerf",
       "mentalHealthProviderResults"
     ]),
   },
   data: () => ({
     bPermissionNoteExapand: false
-  })
+  }),
+  mounted() {
+    // If no result goto GP input step
+    if(!this.mentalHealthProviderResults) {
+      this.$router.push({ name: "FindGP" });
+    }
+  }
 };
 </script>
 
 <style>
+.page-perf-debug {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+}
 </style>
