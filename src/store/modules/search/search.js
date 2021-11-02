@@ -2,15 +2,16 @@ import axios from "axios";
 
 // https://api.getthedata.com/postcode/SW1A+1AA
 const _api1 = "https://api.getthedata.com/postcode/";
-const _api2 = "https://api.nhs.uk/service-search/search?api-version=2";
+// const _api2 = "https://api.nhs.uk/service-search/search?api-version=2";
+const _api2 = "https://nhsuk-apim-int-uks.azure-api.net/service-search/organisationprofiles/search?api-version=1";
 const _api3 = "https://catchment-area-service.azurewebsites.net/eligibilityregion/fake"
 
 // https://catchment-area-service.azurewebsites.net/serviceprovider/point?lat=51.3619384765625&lon=-0.5259902477264404
 const _api4 = "https://catchment-area-service.azurewebsites.net/serviceprovider/point"
-
+// public subscription 0649ea6318e9425eb972e2e4c385cdb9
 const _headers = {
   headers: {
-    "subscription-key": "0649ea6318e9425eb972e2e4c385cdb9",
+    "subscription-key": "c8b0e93b72994848af9169bc4a174ee6",
     "Content-Type": "application/json"
   }
 };
@@ -73,7 +74,7 @@ const actions = {
     commit("SET_GP_SEARCH_TERM", "");
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
   },
-  postSearchGP({commit},{ search }) {
+  postSearchGP({commit},{ search = ""}) {
     // console.log("postSearchGP:",search)
     let reqParameters = {
         filter: "OrganisationTypeId eq 'GPB'",
