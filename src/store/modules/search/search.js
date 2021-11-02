@@ -107,6 +107,15 @@ const actions = {
     // https://catchment-area-service.azurewebsites.net/serviceprovider/point?lat=51.3619384765625&lon=-0.5259902477264404
     console.log("getSearchMentalHealthProvidersByCatchment",_api);
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
+    // Add interceptors for the the request/response
+    axios.interceptors.request.use(request => {
+      console.log('Starting Request', JSON.stringify(request, null, 2))
+      return request
+    })
+    axios.interceptors.response.use(response => {
+      console.log('Response:', JSON.stringify(response, null, 2))
+      return response
+    })
     axios.get(_api).then(resp => {
       // console.log("-->getSearchMentalHealthProvidersByCatchment:",resp.data)
       commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", resp.data);
