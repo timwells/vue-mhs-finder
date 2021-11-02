@@ -66,8 +66,8 @@ export default {
   watch: {
     // eslint-disable-next-line no-unused-vars
     gpSearchResults(n, o) {
-      if (n !== null) {
-        // Result Available -> route to display
+      if (n) {
+        // Results available -> route to display them
         this.$router.push({ name: "FindGPSearchResults" });
       }
     },
