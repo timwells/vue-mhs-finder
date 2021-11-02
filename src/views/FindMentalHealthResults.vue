@@ -44,7 +44,7 @@
                 <div>
                   <h3 class="results__name">{{ provider.organisationName }}</h3>
                   <p class="results__website">
-                    <a>Visit<span class="nhsuk-u-visually-hidden">{{provider.organisationName}}</span>website</a>
+                    <a>Visit<span class="nhsuk-u-visually-hidden">{{provider.organisationName}}</span> website</a>
                   </p>
 
                   <p class="results__telephone">
@@ -76,6 +76,18 @@
                       </span>
                     </a>
                   </div>
+                  <details class="nhsuk-details debug" nhsuk-polyfilled="true" id="nhsuk-details">
+                    <summary class="nhsuk-details__summary" 
+                      role="button" aria-controls="nhsuk-details__text0" tabindex="0" :aria-expanded="bPermissionNoteExapand">
+                      <span class="nhsuk-details__summary-text">Debug section</span>
+                    </summary>
+                    <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
+                        <p class="debug">The organisation <b>{{ provider.organisationName}} </b>is one of the {{ mentalHealthProviderResults.length }} IAPT Services available having:
+                        <p class="debug">ODSCode: <b>{{ provider.odsCode }}</b></p>
+                        <p class="debug">Latitude: <b>{{ provider.location.position.latitude }}</b></p> 
+                        <p class="debug">Longitude: <b>{{ provider.location.position.longitude }}</b></p>                 
+                    </div>
+                  </details>
                 </div>
               </li>
             </ol>
@@ -96,6 +108,9 @@ export default {
       "mentalHealthProviderResults"
     ]),
   },
+  data: () => ({
+    bPermissionNoteExapand: false
+  })
 };
 </script>
 
