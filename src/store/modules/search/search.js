@@ -77,10 +77,9 @@ const actions = {
     // console.log("postSearchGP:",search)
     let reqParameters = {
         filter: "OrganisationTypeId eq 'GPB'",
-        orderby: "OrganisationName",
-        searchFields: "OrganisationName,OrganisationAliases/OrganisationAlias,Address1,Address2,Address3,City",
+        searchFields: "OrganisationName,OrganisationAliases/OrganisationAlias,Address1,Address2,Address3",
         search: search,
-        select: "OrganisationName,Address1,Address2,Address3,City,County,Postcode,Latitude,Longitude",
+        select: "OrganisationName,Address1,Address2,Address3,City,County,Postcode,Latitude,Longitude,ODSCode,SearchKey",
         top: 25,
         skip: 0,
         count: true
