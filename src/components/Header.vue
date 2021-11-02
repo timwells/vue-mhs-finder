@@ -333,7 +333,9 @@ export default {
 
 <style>
 span.small {
-  color: white;
-  font-size: smaller;
+  color : yellow;
+  font-size: 14px;
+  font-weight: 600;
+  padding-top: 10px;
 }
 </style>
