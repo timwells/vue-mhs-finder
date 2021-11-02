@@ -57,8 +57,9 @@
                       <span class="nhsuk-details__summary-text">Debug section</span>
                     </summary>
                     <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
-                        <p class="debug">By clicking on <b><i>This is my GP</i></b>, the patient is about to get all the IAPT Services for the organisation <b>{{ gp.OrganisationName}}</b> having:
-                        <p class="debug">ODSCode: <b>{{ gp.ODSCode }}</b></p>
+                        <p class="debug">By clicking on <b><i>This is my GP</i></b>, the Ciziten is about to get all the eligible IAPT Services for the organisation <b>{{ gp.OrganisationName}}</b> having:
+                        <p class="debug">SearchKey: <b>{{gp.SearchKey}}</b></p>
+                        <p class="debug">ODSCode: <b>{{gp.ODSCode }}</b></p>
                         <p class="debug">Latitude: <b>{{gp.Latitude}}</b></p> 
                         <p class="debug">Longitude: <b>{{gp.Longitude}}</b></p>                 
                     </div>
@@ -95,8 +96,8 @@ export default {
   watch: {
     mentalHealthProviderResults(n) {
     console.log("mentalHealthProviderResults",n)
-      if (n !== null) {
-        // Result Available -> route to display
+      if (n) {
+        // Results available -> route to display them
         this.$router.push({ name: "FindMentalHealthResults"});
       }
     }
@@ -108,12 +109,17 @@ export default {
           lat: lat,
           lng: lng,
       });
-
-}
+    }
   },
   data: () => ({
     bPermissionNoteExapand: false
-  })
+  }),
+  mounted() {
+    console.log("Mounted: FindGPSearchResults");
+    if(!this.gpSearchResults) {
+      this.$router.push({ name: "FindGP" });
+    }
+  }
 };
 </script>
 
