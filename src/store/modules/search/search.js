@@ -3,11 +3,13 @@ import axios from "axios";
 // https://api.getthedata.com/postcode/SW1A+1AA
 const _api1 = "https://api.getthedata.com/postcode/";
 const _api2 = "https://api.nhs.uk/service-search/search?api-version=2";
+// const _api2 = "https://nhsuk-apim-int-uks.azure-api.net/service-search/organisationprofiles/search?api-version=1";
 const _api3 = "https://catchment-area-service.azurewebsites.net/eligibilityregion/fake"
 
 // https://catchment-area-service.azurewebsites.net/serviceprovider/point?lat=51.3619384765625&lon=-0.5259902477264404
 const _api4 = "https://catchment-area-service.azurewebsites.net/serviceprovider/point"
-
+// public subscription 0649ea6318e9425eb972e2e4c385cdb9
+// INT subscription c8b0e93b72994848af9169bc4a174ee6
 const _headers = {
   headers: {
     "subscription-key": "0649ea6318e9425eb972e2e4c385cdb9",
@@ -73,14 +75,13 @@ const actions = {
     commit("SET_GP_SEARCH_TERM", "");
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
   },
-  postSearchGP({commit},{ search }) {
+  postSearchGP({commit},{ search = ""}) {
     // console.log("postSearchGP:",search)
     let reqParameters = {
         filter: "OrganisationTypeId eq 'GPB'",
-        orderby: "OrganisationName",
-        searchFields: "OrganisationName,OrganisationAliases/OrganisationAlias,Address1,Address2,Address3,City",
+        searchFields: "OrganisationName,OrganisationAliases/OrganisationAlias,Address1,Address2,Address3",
         search: search,
-        select: "OrganisationName,Address1,Address2,Address3,City,County,Postcode,Latitude,Longitude",
+        select: "OrganisationName,Address1,Address2,Address3,City,County,Postcode,Latitude,Longitude,ODSCode,SearchKey",
         top: 25,
         skip: 0,
         count: true
@@ -107,6 +108,15 @@ const actions = {
     // https://catchment-area-service.azurewebsites.net/serviceprovider/point?lat=51.3619384765625&lon=-0.5259902477264404
     console.log("getSearchMentalHealthProvidersByCatchment",_api);
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
+    // Add interceptors for the the request/response
+    axios.interceptors.request.use(request => {
+      console.log('Starting Request', JSON.stringify(request, null, 2))
+      return request
+    })
+    axios.interceptors.response.use(response => {
+      console.log('Response:', JSON.stringify(response, null, 2))
+      return response
+    })
     axios.get(_api).then(resp => {
       // console.log("-->getSearchMentalHealthProvidersByCatchment:",resp.data)
       commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", resp.data);
