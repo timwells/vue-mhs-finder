@@ -24,7 +24,9 @@ const state = {
   gpSearchTerm: "",
   gpSearchResults: null,
 
-  mentalHealthProviderResults: null,
+  mentalHealthProviderResults: null,  
+  mentalHealthProviderReqAPI: "",
+  mentalHealthProviderRespPerf: 0,
 
   iaptResults: null
 };
@@ -37,6 +39,10 @@ const mutations = {
   SET_POSTCODE: (state, payload) => (state.postCodeResult = payload),
   SET_MH_TESTCASE: (state, payload) => (state.mhTestCase = payload),
 
+  SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_REQ_API: 
+    (state, payload) => (state.mentalHealthProviderReqAPI = payload),
+  SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESP_PERF: 
+    (state, payload) => (state.mentalHealthProviderRespPerf = payload),
   SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS: 
     (state, payload) => (state.mentalHealthProviderResults = payload),
 
@@ -105,10 +111,31 @@ const actions = {
   getSearchMentalHealthProvidersByCatchment({ commit }, { lat, lng }) {
     console.log("getSearchMentalHealthProvidersByCatchment","lat:",lat,"lng:", lng);
     let _api = `${_api4}?lat=${lat}&lon=${lng}`
-    // https://catchment-area-service.azurewebsites.net/serviceprovider/point?lat=51.3619384765625&lon=-0.5259902477264404
     console.log("getSearchMentalHealthProvidersByCatchment",_api);
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
+    commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_REQ_API", _api);
+
+    // Add interceptors for the the request/response performance
+    // Record start time of request
+    axios.interceptors.request.use(function (config) {
+      config.metadata = { startTime: new Date()}
+      return config;
+    }, function (error) {
+      return Promise.reject(error);
+    });
+ 
+    axios.interceptors.response.use(function (response) {
+      response.config.metadata.endTime = new Date()
+      response.duration = response.config.metadata.endTime - response.config.metadata.startTime
+      return response;
+    }, function (error) {
+      error.config.metadata.endTime = new Date();
+      error.duration = error.config.metadata.endTime - error.config.metadata.startTime;
+      return Promise.reject(error);
+    });
+
     // Add interceptors for the the request/response
+    // Request & Response Logging
     axios.interceptors.request.use(request => {
       console.log('Starting Request', JSON.stringify(request, null, 2))
       return request
@@ -117,10 +144,12 @@ const actions = {
       console.log('Response:', JSON.stringify(response, null, 2))
       return response
     })
-    axios.get(_api).then(resp => {
-      // console.log("-->getSearchMentalHealthProvidersByCatchment:",resp.data)
-      commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", resp.data);
-     });
+
+    axios.get(_api)
+    .then(resp => {
+      commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESP_PERF", resp.duration)
+      commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", resp.data)
+    });
   },
 
   getSearchCatchment({commit}) {
