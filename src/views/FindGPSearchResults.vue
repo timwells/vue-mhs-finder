@@ -15,7 +15,7 @@
             </svg>
           </router-link>
         </div>
-
+                
         <div v-if="gpSearchResults">
           <h1>Select your GP to see available services</h1>
           <h2 class="nhsuk-body-l">
@@ -71,6 +71,7 @@
                       <span aria-hidden="true">This</span> is my GP
                     </a>
                   </p>
+                  <pulse-loader :loading="bLoading" :color="color" :size="size"></pulse-loader>
                 </div>
               </li>
             </ol>
@@ -83,9 +84,13 @@
 
 <script>
 import { mapState } from "vuex";
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
   name: "FindGPSearchResults",
+  components: {
+    PulseLoader
+  },
   computed: {
     ...mapState("search", [
       "gpSearchResults",
@@ -95,16 +100,17 @@ export default {
   },
   watch: {
     mentalHealthProviderResults(n) {
-    console.log("mentalHealthProviderResults",n)
       if (n) {
         // Results available -> route to display them
+        this.bLoading = false;
         this.$router.push({ name: "FindMentalHealthResults"});
       }
     }
   },
   methods: {
     gpLinkClicked(org, lat, lng) {
-      console.log("gpLinkClicked", org, lat, lng);      
+      console.log("gpLinkClicked", org, lat, lng);
+      this.bLoading = true;
       this.$store.dispatch("search/getSearchMentalHealthProvidersByCatchment", {
           lat: lat,
           lng: lng,
@@ -112,10 +118,12 @@ export default {
     }
   },
   data: () => ({
-    bPermissionNoteExapand: false
+    bPermissionNoteExapand: false,
+    bLoading: false,
+    color: '#005eb8',
+    size: '16px'
   }),
   mounted() {
-    console.log("Mounted: FindGPSearchResults");
     if(!this.gpSearchResults) {
       this.$router.push({ name: "FindGP" });
     }
