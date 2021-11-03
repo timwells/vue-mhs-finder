@@ -30,9 +30,10 @@
               <span class="nhsuk-details__summary-text">API Performance</span>
             </summary>
             <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
-                <p class="page-perf-debug">API: {{ gpSearchReqAPI }}</p>
-                <p class="page-perf-debug">Request body: {{ gpSearchReqBody }}</p>
-                <p class="page-perf-debug">Req/Resp: {{ gpSearchRespPerf }} ms</p>
+                <p class="page-perf-debug"><b>API:</b> {{ gpSearchReqAPI }}</p>
+                <p class="page-perf-debug"><b>Request body:</b></p>
+                <pre>{{ gpSearchReqBody }}</pre>
+                <p class="page-perf-debug"><b>Req/Resp:</b> {{ gpSearchRespPerf }} ms</p>
             </div>
           </details>
 
