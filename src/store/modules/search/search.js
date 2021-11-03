@@ -28,6 +28,10 @@ const state = {
   mentalHealthProviderReqAPI: "",
   mentalHealthProviderRespPerf: 0,
 
+  gpSearchReqAPI: "",
+  gpSearchRespPerf: 0,
+  gpSearchReqBody: "",
+
   iaptResults: null
 };
 
@@ -48,6 +52,12 @@ const mutations = {
 
   SET_GP_SEARCH_TERM: (state, payload) => (state.gpSearchTerm = payload),
   SET_GP_SEARCH_RESULTS: (state, payload) => (state.gpSearchResults = payload),
+  SET_GP_SEARCH_REQ_API: 
+    (state, payload) => (state.gpSearchReqAPI = payload),
+  SET_GP_SEARCH_REQ_BODY: 
+    (state, payload) => (state.gpSearchReqBody = payload),
+  SET_GP_SEARCH_RESP_PERF: 
+    (state, payload) => (state.gpSearchRespPerf = payload),
   
   SET_IAPT_RESULTS: (state, payload) => (state.iaptResults = payload)
 };
@@ -92,11 +102,44 @@ const actions = {
         skip: 0,
         count: true
     };
+    // Add interceptors for the the request/response performance
+    // Record start time of request
+    axios.interceptors.request.use(function (config) {
+      config.metadata = { startTime: new Date()}
+      return config;
+    }, function (error) {
+      return Promise.reject(error);
+    });
+ 
+    axios.interceptors.response.use(function (response) {
+      response.config.metadata.endTime = new Date()
+      response.duration = response.config.metadata.endTime - response.config.metadata.startTime
+      return response;
+    }, function (error) {
+      error.config.metadata.endTime = new Date();
+      error.duration = error.config.metadata.endTime - error.config.metadata.startTime;
+      return Promise.reject(error);
+    });
+
+    // Add interceptors for the the request/response
+    // Request & Response Logging
+    axios.interceptors.request.use(request => {
+      console.log('Starting Request', JSON.stringify(request, null, 2))
+      return request
+    })
+    axios.interceptors.response.use(response => {
+      console.log('Response:', JSON.stringify(response, null, 2))
+      return response
+    })
+
     commit("SET_GP_SEARCH_RESULTS", null);
     commit("SET_GP_SEARCH_TERM", "");
     axios.post(_api2, reqParameters, _headers).then(resp => {
       commit("SET_GP_SEARCH_TERM", search);
       commit("SET_GP_SEARCH_RESULTS", resp.data.value);
+      commit("SET_GP_SEARCH_REQ_API", _api2)
+      commit("SET_GP_SEARCH_REQ_BODY", JSON.stringify(reqParameters, null, 2))
+      commit("SET_GP_SEARCH_RESP_PERF", resp.duration)
       // console.log("postSearchGP:",resp.data.value);
     });
   },

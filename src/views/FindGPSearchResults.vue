@@ -23,6 +23,19 @@
               We found <span class="results__count">{{ gpSearchResults.length }}</span> GP surgeries using '{{gpSearchTerm}}'.
             </span>
           </h2>
+
+          <details class="nhsuk-details debug" nhsuk-polyfilled="true" id="nhsuk-details">
+            <summary class="nhsuk-details__summary" 
+              role="button" aria-controls="nhsuk-details__text0" tabindex="0" :aria-expanded="bPermissionNoteExapand">
+              <span class="nhsuk-details__summary-text">API Performance</span>
+            </summary>
+            <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
+                <p class="page-perf-debug">API: {{ gpSearchReqAPI }}</p>
+                <p class="page-perf-debug">Request body: {{ gpSearchReqBody }}</p>
+                <p class="page-perf-debug">Req/Resp: {{ gpSearchRespPerf }} ms</p>
+            </div>
+          </details>
+
           <p role="text">If your surgery is not here, check your spelling and <a class="results__search__again" href="/find-gp">search again</a>.</p>
           <div>
             <ol class="nhsuk-list inline-list">
@@ -84,8 +97,7 @@
 
 <script>
 import { mapState } from "vuex";
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
-
+import { PulseLoader } from 'vue-spinner/dist/vue-spinner.min.js'
 export default {
   name: "FindGPSearchResults",
   components: {
@@ -95,7 +107,10 @@ export default {
     ...mapState("search", [
       "gpSearchResults",
       "gpSearchTerm",
-      "mentalHealthProviderResults"
+      "mentalHealthProviderResults",
+      "gpSearchReqAPI",
+      "gpSearchRespPerf",
+      "gpSearchReqBody"
     ])
   },
   watch: {
