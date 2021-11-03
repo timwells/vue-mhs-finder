@@ -35,7 +35,7 @@
           <details class="nhsuk-details debug" nhsuk-polyfilled="true" id="nhsuk-details">
             <summary class="nhsuk-details__summary" 
               role="button" aria-controls="nhsuk-details__text0" tabindex="0" :aria-expanded="bPermissionNoteExapand">
-              <span class="nhsuk-details__summary-text">API Perf</span>
+              <span class="nhsuk-details__summary-text">API Performance</span>
             </summary>
             <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
                 <p class="page-perf-debug">API: {{ mentalHealthProviderReqAPI }}</p>
@@ -53,17 +53,31 @@
               >
                 <hr />
                 <div>
-                  <h3 class="results__name">{{ provider.organisationName }}</h3>
+                  <h3 class="results__name">
+                    <span v-if="provider.organisationName">{{ provider.organisationName }}</span>
+                    <span v-else class="error-item">???</span>
+                    </h3>
                   <p class="results__website">
-                    <a>Visit<span class="nhsuk-u-visually-hidden">{{provider.organisationName}}</span> website</a>
+                    <a href="#">Visit website
+                      <span class="nhsuk-u-visually-hidden">
+                        <span v-if="provider.website">{{provider.website}} website</span>
+                        <span v-else class="error-item">? website</span>
+                      </span>
+                    </a>
                   </p>
 
-                  <p class="results__telephone">
-                    Telephone:<a href="#" class="telephone_tracking">{{provider.phone}}</a>
+                  <p class="results__telephone">Telephone:
+                    <a href="#" class="telephone_tracking">
+                      <span v-if="provider.phone">{{provider.phone}}</span>
+                      <span v-else class="error-item">?</span>
+                    </a>
                   </p>
 
-                  <p class="results__email">
-                    Email:<a href="mailto:hillingdontalkingtherapies.cnwl@nhs.net">{{provider.phone}}</a>
+                  <p class="results__email">Email:
+                    <a href="mailto:a@b.com">
+                      <span v-if="provider.email">{{provider.email}}</span>
+                      <span v-else class="error-item">?</span>
+                    </a>
                   </p>
 
                   <div class="nhsuk-action-link results__self__referral">
@@ -80,9 +94,7 @@
                         ></path>
                       </svg>
                       <span class="nhsuk-action-link__text"
-                        >Refer yourself online<span
-                          class="nhsuk-u-visually-hidden"
-                          >{{ provider.organisationName }}</span
+                        >Refer yourself online<span class="nhsuk-u-visually-hidden" v-if="provider.organisationName">{{ provider.organisationName }}</span
                         >
                       </span>
                     </a>
@@ -93,10 +105,31 @@
                       <span class="nhsuk-details__summary-text">Debug section</span>
                     </summary>
                     <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
-                        <p class="debug">The organisation <b>{{ provider.organisationName}} </b>is one of the {{ mentalHealthProviderResults.length }} eligible IAPT Services available having:
-                        <p class="debug">ODSCode: <b>{{ provider.odsCode }}</b></p>
-                        <p class="debug">Latitude: <b>{{ provider.location.position.latitude }}</b></p> 
-                        <p class="debug">Longitude: <b>{{ provider.location.position.longitude }}</b></p>
+                        <p class="debug">
+                            <span v-if="provider.organisationName">The organisation <b>{{ provider.organisationName}} </b>
+                              is one of the {{ mentalHealthProviderResults.length }} eligible IAPT Services available having:</span>
+                            <span v-else class="error-item">Organisation: <b>?</b></span>
+                        </p>
+                        <p class="debug">
+                          <span v-if="provider.odsCode>0">ODSCode: <b>{{ provider.odsCode }}</b></span>
+                          <span v-else class="error-item">ODSCode: <b>?</b></span>
+                        </p>
+                        <p class="debug">
+                          <span v-if="provider.referralURL">referralURL: <b>{{ provider.referralURL }}</b></span>
+                          <span v-else class="error-item">referralURL: <b>?</b></span>
+                        </p>
+                        <p class="debug">
+                          <span v-if="provider.website">Website<b>{{ provider.website }}</b></span>
+                          <span v-else class="error-item">Website: <b>?</b></span>
+                        </p>
+                        <p class="debug">
+                          <span v-if="provider.location">Latitude: <b>{{ provider.location.position.latitude }}</b></span>
+                          <span v-else class="error-item">Latitude: <b>?</b></span>                          
+                        </p> 
+                        <p class="debug">
+                          <span v-if="provider.location">Longitude: <b>{{ provider.location.position.longitude }}</b></span>
+                          <span v-else class="error-item">Longitude: <b>?</b></span>                          
+                        </p> 
                     </div>
                   </details>
                 </div>
@@ -138,5 +171,8 @@ export default {
   font-size: 14px;
   font-weight: 400;
   margin: 0;
+}
+.error-item {
+  color: red;
 }
 </style>
