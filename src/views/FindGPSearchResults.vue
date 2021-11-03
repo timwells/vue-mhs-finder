@@ -15,8 +15,9 @@
             </svg>
           </router-link>
         </div>
-                
         <div v-if="gpSearchResults">
+           <json-viewer :value="gpSearchResults" :expand-depth="5" sort/>
+
           <h1>Select your GP to see available services</h1>
           <h2 class="nhsuk-body-l">
             <span role="text">
@@ -98,12 +99,15 @@
 
 <script>
 import { mapState } from "vuex";
-// import { PulseLoader } from 'vue-spinner/dist/vue-spinner.vue'
-import { PulseLoader } from 'vue-spinner/dist/vue-spinner.min.js'
+import PulseLoader from "vue-spinner/src/PulseLoader.vue"
+
+import JsonViewer from 'vue-json-viewer'
+
 export default {
   name: "FindGPSearchResults",
   components: {
-    PulseLoader
+    PulseLoader,
+    JsonViewer
   },
   computed: {
     ...mapState("search", [
