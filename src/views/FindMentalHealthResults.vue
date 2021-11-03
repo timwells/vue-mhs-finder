@@ -3,7 +3,7 @@
     <main id="main-content" class="nhsuk-main-wrapper">
       <div class="nhsuk-u-reading-width">
         <div class="nhsuk-back-link">
-          <router-link to="/find-gp">
+          <router-link to="/find-gp-search-results">
             <svg
               class="nhsuk-icon nhsuk-icon__chevron-left"
               xmlns="http://www.w3.org/2000/svg"
@@ -38,8 +38,8 @@
               <span class="nhsuk-details__summary-text">API Performance</span>
             </summary>
             <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
-                <p class="page-perf-debug">API: {{ mentalHealthProviderReqAPI }}</p>
-                <p class="page-perf-debug">Req/Resp: {{ mentalHealthProviderRespPerf }} ms</p>
+                <p class="page-perf-debug"><b>API:</b> {{ mentalHealthProviderReqAPI }}</p>
+                <p class="page-perf-debug"><b>Req/Resp:</b> {{ mentalHealthProviderRespPerf }} ms</p>
             </div>
           </details>
 
