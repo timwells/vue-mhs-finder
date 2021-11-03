@@ -3,7 +3,7 @@
     <div class="nhsuk-width-container nhsuk-header__container">
       <div class="nhsuk-header__logo">
         <a class="nhsuk-header__link"
-          href=""
+          href="/find-gp"
           aria-label="NHS homepage">
           <svg
             class="nhsuk-logo"
