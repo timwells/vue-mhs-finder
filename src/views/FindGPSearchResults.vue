@@ -97,6 +97,7 @@
 
 <script>
 import { mapState } from "vuex";
+// import { PulseLoader } from 'vue-spinner/dist/vue-spinner.vue'
 import { PulseLoader } from 'vue-spinner/dist/vue-spinner.min.js'
 export default {
   name: "FindGPSearchResults",
@@ -149,4 +150,10 @@ export default {
 <style>
  a { cursor: pointer; }
  .debug {font-size: 14px;}
+ 
+ .page-perf-debug {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+}
 </style>
