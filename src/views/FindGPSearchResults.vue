@@ -16,7 +16,6 @@
           </router-link>
         </div>
         <div v-if="gpSearchResults">
-           <json-viewer :value="gpSearchResults" :expand-depth="5" sort/>
 
           <h1>Select your GP to see available services</h1>
           <h2 class="nhsuk-body-l">
@@ -33,7 +32,8 @@
             <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
                 <p class="page-perf-debug"><b>API:</b> {{ gpSearchReqAPI }}</p>
                 <p class="page-perf-debug"><b>Request body:</b></p>
-                <pre>{{ gpSearchReqBody }}</pre>
+                <json-viewer :value="gpSearchReqBody" :expand-depth="1" sort/>
+                <br>
                 <p class="page-perf-debug"><b>Req/Resp:</b> {{ gpSearchRespPerf }} ms</p>
             </div>
           </details>
