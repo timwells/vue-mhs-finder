@@ -38,7 +38,13 @@
               <span class="nhsuk-details__summary-text">API Performance</span>
             </summary>
             <div class="nhsuk-details__text debug" id="nhsuk-details__text0" aria-hidden="false">
-                <p class="page-perf-debug"><b>API:</b> {{ mentalHealthProviderReqAPI }}</p>
+                <p class="page-perf-debug"><b>API URL:</b> <json-viewer :value="request.url" :expand-depth="1" sort/></p>
+                <p class="page-perf-debug"><b>Full API Request:</b></p>
+                <json-viewer :value="request" :expand-depth="0" sort/>
+                <br>
+                <p class="page-perf-debug"><b>Full API Response:</b></p>
+                <json-viewer :value="response.data" :expand-depth="0" sort/>
+                <br>
                 <p class="page-perf-debug"><b>Req/Resp:</b> {{ mentalHealthProviderRespPerf }} ms</p>
             </div>
           </details>
@@ -144,14 +150,20 @@
 
 <script>
 import { mapState } from "vuex";
+import JsonViewer from 'vue-json-viewer'
 
 export default {
   name: "FindMentalHealthResults",
+  components: {
+    JsonViewer
+  },
   computed: {
     ...mapState("search", [
       "mentalHealthProviderReqAPI",
       "mentalHealthProviderRespPerf",
-      "mentalHealthProviderResults"
+      "mentalHealthProviderResults",
+      "request",
+      "response"
     ]),
   },
   data: () => ({

@@ -32,6 +32,9 @@ const state = {
   gpSearchRespPerf: 0,
   gpSearchReqBody: "",
 
+  request: "",
+  response: "",
+
   iaptResults: null
 };
 
@@ -58,6 +61,11 @@ const mutations = {
     (state, payload) => (state.gpSearchReqBody = payload),
   SET_GP_SEARCH_RESP_PERF: 
     (state, payload) => (state.gpSearchRespPerf = payload),
+
+  SET_IAPTP_REQ: 
+    (state, payload) => (state.request = payload),
+  SET_IAPTP_RESP: 
+    (state, payload) => (state.response = payload),
   
   SET_IAPT_RESULTS: (state, payload) => (state.iaptResults = payload)
 };
@@ -138,7 +146,7 @@ const actions = {
       commit("SET_GP_SEARCH_TERM", search);
       commit("SET_GP_SEARCH_RESULTS", resp.data.value);
       commit("SET_GP_SEARCH_REQ_API", _api2)
-      commit("SET_GP_SEARCH_REQ_BODY", JSON.stringify(reqParameters, null, 2))
+      commit("SET_GP_SEARCH_REQ_BODY", reqParameters)
       commit("SET_GP_SEARCH_RESP_PERF", resp.duration)
       // console.log("postSearchGP:",resp.data.value);
     });
@@ -181,10 +189,12 @@ const actions = {
     // Request & Response Logging
     axios.interceptors.request.use(request => {
       console.log('Starting Request', JSON.stringify(request, null, 2))
+      commit("SET_IAPTP_REQ", request)
       return request
     })
     axios.interceptors.response.use(response => {
       console.log('Response:', JSON.stringify(response, null, 2))
+      commit("SET_IAPTP_RESP", response)
       return response
     })
 
