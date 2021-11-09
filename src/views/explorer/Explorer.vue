@@ -1,6 +1,6 @@
 <template>
   <a-tabs default-active-key="1" @change="callback">
-    <a-tab-pane key="1" tab="IPAT List">
+    <a-tab-pane key="1" tab="IAPTs">
       <div class="table-width">
         <a-table
           :columns="columns"
@@ -82,9 +82,9 @@
           </template>
           <template
             slot="RelatedIAPTCCGsRender"
-            slot-scope="text"
+            slot-scope="record"
           >
-            {{text}}
+            {{filterCCGs(record)}}
           </template>
         </a-table>
       </div>
@@ -97,8 +97,9 @@
 </template>
 
 <script>
-import { TabPane } from "ant-design-vue";
 import { mapState } from "vuex";
+import { TabPane } from "ant-design-vue";
+import JsonViewer from 'vue-json-viewer'
 
 const columns = [
   {
@@ -195,6 +196,7 @@ export default {
   name: "Explorer",
   component: {
     TabPane,
+    JsonViewer
   },
   computed: {
     ...mapState("explorer", ["allIAPTResults"]),
@@ -212,6 +214,7 @@ export default {
       clearFilters();
       this.searchText = "";
     },
+    filterCCGs: (record) => record.map((relatedOrg) => (relatedOrg.OrganisationName)).join(",")
   },
   data: () => ({
     data: [],
