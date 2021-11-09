@@ -80,6 +80,12 @@
               {{ text }}
             </template>
           </template>
+          <template
+            slot="RelatedIAPTCCGsRender"
+            slot-scope="text"
+          >
+            {{text}}
+          </template>
         </a-table>
       </div>
     </a-tab-pane>
@@ -168,6 +174,13 @@ const columns = [
     sorter: (a, b) => a.Postcode.localeCompare(b.Postcode),
     sortDirections: ["descend", "ascend"],
   },
+  {
+    title: "Related CCGs",
+    dataIndex: "RelatedIAPTCCGs",
+    scopedSlots: {
+      customRender: "RelatedIAPTCCGsRender"
+    },
+  }
   /*{
     title: 'Latitude',
     dataIndex: 'Latitude',
