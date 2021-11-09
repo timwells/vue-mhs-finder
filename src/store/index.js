@@ -1,15 +1,16 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-Vue.use(Vuex)
+// Store Modules
+import app from "./modules/app/app";
+import search from "./modules/search/search";
+import explorer from "./modules/explorer/explorer";
 
+Vue.use(Vuex);
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
+    app,
+    search,
+    explorer
   }
-})
+});
