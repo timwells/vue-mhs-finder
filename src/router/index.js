@@ -21,20 +21,14 @@ const routes = [
     path: '/find-mental-health-provider-search-results',
     name: 'FindMentalHealthResults',
     component: () => import('../views/FindMentalHealthResults.vue')
-  }
-
-  /*
-  {
-    path: '/find-by-location',
-    name: 'FindByLocation',
-    component: () => import('../views/FindByLocation.vue')
   },
   {
-    path: '/finder-results',
-    name: 'FinderResults',
-    component: () => import('../views/FinderResults.vue')
-  }
-  */
+    path: '/explorer',
+    name: 'Explorer',
+    component: () => import('../views/explorer/Explorer.vue')
+  },
+  
+  
 ]
 
 const router = new VueRouter({
