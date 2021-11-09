@@ -45,7 +45,7 @@ const actions = {
         // filter: "OrganisationTypeId eq 'CLI'",
         filter: "OrganisationTypeId eq 'GPB'",
         orderby: "OrganisationName",
-        select: "OrganisationName,OrganisationTypeId,Address1,Address2,Address3,City,County,Postcode,ODSCode,SearchKey,CCG",
+        select: "OrganisationName,OrganisationTypeId,Address1,Address2,Address3,City,County,Postcode,ODSCode,SearchKey,CCG,Latitude,Longitude",
         top:2000,
         count: true
     };
