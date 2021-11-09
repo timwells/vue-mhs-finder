@@ -28,7 +28,6 @@ const routes = [
     component: () => import('../views/explorer/Explorer.vue')
   },
   
-  
 ]
 
 const router = new VueRouter({
