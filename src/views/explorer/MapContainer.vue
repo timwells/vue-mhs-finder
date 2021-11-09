@@ -13,26 +13,6 @@
   import VectorSource from 'ol/source/Vector'
   import GeoJSON from 'ol/format/GeoJSON'
   import 'ol/ol.css'
-  import Feature from 'ol/Feature';
-  import Point from 'ol/geom/Point';
-  import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
-
-
-  const geoMarker = new Feature({
-      geometry: new Point([-1.94267, 52.3604]),
-      type: 'geoMarker'
-    });
-
-  const markerStyle = new Style({
-      image: new CircleStyle({
-        radius: 8,
-        fill: new Fill({color: 'red'}),
-        stroke: new Stroke({
-          color: 'black',
-          width: 4,
-        }),
-      }),
-    });
   
   export default {
     name: 'MapContainer',
@@ -48,11 +28,8 @@
     mounted() {
       this.vectorLayer = new VectorLayer({
         source: new VectorSource({
-          features: [geoMarker],
+          features: [],
         }),
-        style: function () {
-          return markerStyle;
-      },
       })
       this.olMap = new Map({
         target: this.$refs['map-root'],
