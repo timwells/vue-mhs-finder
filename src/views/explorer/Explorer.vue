@@ -3,7 +3,7 @@
     <a-tab-pane key="1" tab="IAPTs">
       <div class="table-width">
         <a-table
-          :columns="columns"
+          :columns="column_concat(columns, unique_columns_iapt)"
           :data-source="allIAPTResults"
           :row-key="(record) => record.SearchKey"
           :pagination="pagination"
@@ -90,7 +90,93 @@
       </div>
     </a-tab-pane>
     <a-tab-pane key="2" tab="GP List" force-render>
-      Content of Tab Pane 2
+      <div class="table-width">
+        <a-table
+          :columns="column_concat(columns, unique_columns_gp)"
+          :data-source="allGPResults"
+          :row-key="(record) => record.SearchKey"
+          :pagination="pagination"
+          :loading="loading"
+        >
+          <div
+            slot="filterDropdown"
+            slot-scope="{
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+              column,
+            }"
+            style="padding: 8px"
+          >
+            <a-input
+              v-ant-ref="(c) => (searchInput = c)"
+              :placeholder="`Search ${column.dataIndex}`"
+              :value="selectedKeys[0]"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="
+                (e) => setSelectedKeys(e.target.value ? [e.target.value] : [])
+              "
+              @pressEnter="
+                () => handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+            />
+            <a-button
+              type="primary"
+              icon="search"
+              size="small"
+              style="width: 90px; margin-right: 8px"
+              @click="
+                () => handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+              >Search</a-button
+            >
+            <a-button
+              size="small"
+              style="width: 90px"
+              @click="() => handleReset(clearFilters)"
+              >Reset</a-button
+            >
+          </div>
+          <a-icon
+            slot="filterIcon"
+            slot-scope="filtered"
+            type="search"
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          />
+          <template
+            slot="customRender"
+            slot-scope="text, record, index, column"
+          >
+            <span v-if="searchText && searchedColumn === column.dataIndex">
+              <template
+                v-for="(fragment, i) in text
+                  .toString()
+                  .split(
+                    new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')
+                  )"
+              >
+                <mark
+                  v-if="fragment.toLowerCase() === searchText.toLowerCase()"
+                  :key="i"
+                  class="highlight"
+                  >{{ fragment }}</mark
+                >
+                <template v-else>{{ fragment }}</template>
+              </template>
+            </span>
+            <template v-else>
+              {{ text }}
+            </template>
+          </template>
+          <template
+            slot="CCGsRender"
+            slot-scope="text"
+          >
+            {{text.OrganisationName}} - {{text.ODSCode}}
+          </template>
+        </a-table>
+      </div>
     </a-tab-pane>
     <a-tab-pane key="3" tab="Query"> Content of Tab Pane 3 </a-tab-pane>
   </a-tabs>
@@ -174,13 +260,6 @@ const columns = [
     onFilter: (value, record) => record.Postcode.indexOf(value) === 0,
     sorter: (a, b) => a.Postcode.localeCompare(b.Postcode),
     sortDirections: ["descend", "ascend"],
-  },
-  {
-    title: "Related CCGs",
-    dataIndex: "RelatedIAPTCCGs",
-    scopedSlots: {
-      customRender: "RelatedIAPTCCGsRender"
-    },
   }
   /*{
     title: 'Latitude',
@@ -192,6 +271,27 @@ const columns = [
   }*/
 ];
 
+const unique_columns_iapt = [
+  {
+    title: "Related CCGs",
+    dataIndex: "RelatedIAPTCCGs",
+    scopedSlots: {
+      customRender: "RelatedIAPTCCGsRender"
+   },
+  }
+];
+
+const unique_columns_gp = [
+  {
+    title: "CCGs",
+    dataIndex: "CCG",
+    scopedSlots: {
+      customRender: "CCGsRender"
+   },
+  }
+];
+
+
 export default {
   name: "Explorer",
   component: {
@@ -199,7 +299,7 @@ export default {
     JsonViewer
   },
   computed: {
-    ...mapState("explorer", ["allIAPTResults"]),
+    ...mapState("explorer", ["allIAPTResults", "allGPResults"]),
   },
   methods: {
     callback(key) {
@@ -214,11 +314,18 @@ export default {
       clearFilters();
       this.searchText = "";
     },
+    column_concat(array_1, array_2) {
+      // this.concat_columns = []
+      this.concat_columns = array_1.concat(array_2);
+      return this.concat_columns
+    },
     filterCCGs: (record) => record.map((relatedOrg) => (relatedOrg.OrganisationName)).join(",")
   },
   data: () => ({
     data: [],
     columns,
+    unique_columns_iapt,
+    unique_columns_gp,
     pagination: { pageSize: 15 },
     loading: false,
     searchText: "",
@@ -227,6 +334,7 @@ export default {
   }),
   mounted() {
     this.$store.dispatch("explorer/postSearchAllIAPTs");
+    this.$store.dispatch("explorer/postSearchAllGPs");
   },
 };
 </script>
