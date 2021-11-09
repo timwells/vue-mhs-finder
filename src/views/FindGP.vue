@@ -54,6 +54,14 @@
           type="submit">
           Continue
         </button>
+        <br>
+        <router-link to="/explorer">
+        <button
+          class="nhsuk-button nhsuk-u-margin-bottom-4 btn btn-primary"
+          style="color: #b3ccff;background-color: #3399ff;">
+          Explorer
+        </button>
+        </router-link>
       </div>
     </main>
   </div>
