@@ -22,6 +22,7 @@ const actions = {
     let reqParameters = {
         // filter: "OrganisationTypeId eq 'CLI'",
         filter: "(Services/any(l: l/ServiceCode eq 'SRV0339')) and (OrganisationTypeId ne 'TRU')",
+        orderby: "OrganisationName",
         select: "OrganisationName,OrganisationTypeId,Address1,Address2,Address3,City,County,Postcode,Latitude,Longitude,ODSCode,SearchKey,RelatedIAPTCCGs",
         top:500,
         count: true
