@@ -1,0 +1,249 @@
+<template>
+  <a-tabs default-active-key="1" @change="callback">
+    <a-tab-pane key="1" tab="IPAT List">
+      <div class="table-width">
+        <a-table
+          :columns="columns"
+          :data-source="allIAPTResults"
+          :row-key="(record) => record.SearchKey"
+          :pagination="pagination"
+          :loading="loading"
+        >
+          <div
+            slot="filterDropdown"
+            slot-scope="{
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+              column,
+            }"
+            style="padding: 8px"
+          >
+            <a-input
+              v-ant-ref="(c) => (searchInput = c)"
+              :placeholder="`Search ${column.dataIndex}`"
+              :value="selectedKeys[0]"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="
+                (e) => setSelectedKeys(e.target.value ? [e.target.value] : [])
+              "
+              @pressEnter="
+                () => handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+            />
+            <a-button
+              type="primary"
+              icon="search"
+              size="small"
+              style="width: 90px; margin-right: 8px"
+              @click="
+                () => handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+              >Search</a-button
+            >
+            <a-button
+              size="small"
+              style="width: 90px"
+              @click="() => handleReset(clearFilters)"
+              >Reset</a-button
+            >
+          </div>
+          <a-icon
+            slot="filterIcon"
+            slot-scope="filtered"
+            type="search"
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          />
+          <template
+            slot="customRender"
+            slot-scope="text, record, index, column"
+          >
+            <span v-if="searchText && searchedColumn === column.dataIndex">
+              <template
+                v-for="(fragment, i) in text
+                  .toString()
+                  .split(
+                    new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')
+                  )"
+              >
+                <mark
+                  v-if="fragment.toLowerCase() === searchText.toLowerCase()"
+                  :key="i"
+                  class="highlight"
+                  >{{ fragment }}</mark
+                >
+                <template v-else>{{ fragment }}</template>
+              </template>
+            </span>
+            <template v-else>
+              {{ text }}
+            </template>
+          </template>
+        </a-table>
+      </div>
+    </a-tab-pane>
+    <a-tab-pane key="2" tab="GP List" force-render>
+      Content of Tab Pane 2
+    </a-tab-pane>
+    <a-tab-pane key="3" tab="Query"> Content of Tab Pane 3 </a-tab-pane>
+  </a-tabs>
+</template>
+
+<script>
+import { TabPane } from "ant-design-vue";
+import { mapState } from "vuex";
+
+const columns = [
+  {
+    title: "#",
+    dataIndex: "index",
+  },
+  {
+    title: "Key",
+    dataIndex: "SearchKey",
+    sorter: true,
+  },
+  {
+    title: "ODS",
+    dataIndex: "ODSCode",
+  },
+  {
+    title: "Name",
+    dataIndex: "OrganisationName",
+    sorter: (a, b) => a.OrganisationName.localeCompare(b.OrganisationName),
+    sortDirections: ["descend", "ascend"],
+    onFilter: (value, record) => record.OrganisationName.toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => {
+          if(this.searchInput)
+            this.searchInput.focus();
+        });
+      }
+    },
+    scopedSlots: {
+      filterDropdown: "filterDropdown",
+      filterIcon: "filterIcon",
+      customRender: "customRender",
+    },
+  },
+  {
+    title: "Type",
+    dataIndex: "OrganisationTypeId",
+    onFilter: (value, record) => record.OrganisationTypeId.indexOf(value) === 0,
+    sorter: (a, b) => a.OrganisationTypeId.localeCompare(b.OrganisationTypeId),
+    sortDirections: ["descend", "ascend"],
+  },
+  {
+    title: "Address1",
+    dataIndex: "Address1",
+  },
+  {
+    title: "Address2",
+    dataIndex: "Address2",
+  },
+  {
+    title: "Address3",
+    dataIndex: "Address3",
+  },
+  {
+    title: "City",
+    dataIndex: "City",
+    onFilter: (value, record) => record.City.indexOf(value) === 0,
+    sorter: (a, b) => a.City.localeCompare(b.City),
+    sortDirections: ["descend", "ascend"],
+  },
+  {
+    title: "County",
+    dataIndex: "County",
+    onFilter: (value, record) => record.County.indexOf(value) === 0,
+    sorter: (a, b) => a.County.localeCompare(b.County),
+    sortDirections: ["descend", "ascend"],
+  },
+  {
+    title: "Postcode",
+    dataIndex: "Postcode",
+    onFilter: (value, record) => record.Postcode.indexOf(value) === 0,
+    sorter: (a, b) => a.Postcode.localeCompare(b.Postcode),
+    sortDirections: ["descend", "ascend"],
+  },
+  /*{
+    title: 'Latitude',
+    dataIndex: 'Latitude',
+  },
+  {
+    title: 'Longitude',
+    dataIndex: 'Longitude',
+  }*/
+];
+
+export default {
+  name: "Explorer",
+  component: {
+    TabPane,
+  },
+  computed: {
+    ...mapState("explorer", ["allIAPTResults"]),
+  },
+  methods: {
+    callback(key) {
+      console.log(key);
+    },
+    handleSearch(selectedKeys, confirm, dataIndex) {
+      confirm();
+      this.searchText = selectedKeys[0];
+      this.searchedColumn = dataIndex;
+    },
+    handleReset(clearFilters) {
+      clearFilters();
+      this.searchText = "";
+    },
+  },
+  data: () => ({
+    data: [],
+    columns,
+    pagination: { pageSize: 15 },
+    loading: false,
+    searchText: "",
+    searchInput: null,
+    searchedColumn: "",
+  }),
+  mounted() {
+    this.$store.dispatch("explorer/postSearchAllIAPTs");
+  },
+};
+</script>
+
+<style>
+.highlight {
+  background-color: rgb(255, 192, 105);
+  padding: 0px;
+}
+
+/* table */
+.ant-table table {
+  background-color: #ffffff;
+  font-size: 6px;
+}
+/* row data */
+.ant-table-thead > tr > th {
+  font-weight: 600;
+  font-size: 0.875rem;
+  height: 5px;
+  padding: 4px;
+}
+.ant-table-tbody > tr > td {
+  font-size: 0.875rem;
+  height: 5px;
+  padding: 4px;
+}
+
+body {
+  background-color: #ffffff;
+}
+
+.table-width {
+  padding: 10px;
+}
+</style>

@@ -1,21 +1,11 @@
 import axios from "axios";
+import { API_HEADERS, API2 } from "../../common/common" 
 
 // https://api.getthedata.com/postcode/SW1A+1AA
 const _api1 = "https://api.getthedata.com/postcode/";
-const _api2 = "https://api.nhs.uk/service-search/search?api-version=2";
-// const _api2 = "https://nhsuk-apim-int-uks.azure-api.net/service-search/organisationprofiles/search?api-version=1";
+// const _api2 = "https://api.nhs.uk/service-search/search?api-version=2";
 const _api3 = "https://catchment-area-service.azurewebsites.net/eligibilityregion/fake"
-
-// https://catchment-area-service.azurewebsites.net/serviceprovider/point?lat=51.3619384765625&lon=-0.5259902477264404
 const _api4 = "https://catchment-area-service.azurewebsites.net/serviceprovider/point"
-
-const _headers = {
-  headers: {
-    // "subscription-key": "0649ea6318e9425eb972e2e4c385cdb9",
-    "subscription-key": process.env.VUE_APP_NHS_SEARCH_API_V2_KEY,
-    "Content-Type": "application/json"
-  }
-};
 
 const state = {
   postCodeResult: null,
@@ -94,13 +84,11 @@ const actions = {
     });
   },
   resetFinder({commit}) {
-    // console.log("resetFinder");
     commit("SET_GP_SEARCH_RESULTS", null);
     commit("SET_GP_SEARCH_TERM", "");
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
   },
   postSearchGP({commit},{ search = ""}) {
-    // console.log("postSearchGP:",search)
     let reqParameters = {
         filter: "OrganisationTypeId eq 'GPB'",
         searchFields: "OrganisationName,OrganisationAliases/OrganisationAlias,Address1,Address2,Address3",
@@ -132,37 +120,33 @@ const actions = {
     // Add interceptors for the the request/response
     // Request & Response Logging
     axios.interceptors.request.use(request => {
-      console.log('Starting Request', JSON.stringify(request, null, 2))
+      // console.log('Starting Request', JSON.stringify(request, null, 2))
       return request
     })
     axios.interceptors.response.use(response => {
-      console.log('Response:', JSON.stringify(response, null, 2))
+      // console.log('Response:', JSON.stringify(response, null, 2))
       return response
     })
 
     commit("SET_GP_SEARCH_RESULTS", null);
     commit("SET_GP_SEARCH_TERM", "");
-    axios.post(_api2, reqParameters, _headers).then(resp => {
+    axios.post(API2, reqParameters, API_HEADERS).then(resp => {
       commit("SET_GP_SEARCH_TERM", search);
       commit("SET_GP_SEARCH_RESULTS", resp.data.value);
-      commit("SET_GP_SEARCH_REQ_API", _api2)
+      commit("SET_GP_SEARCH_REQ_API", API2)
       commit("SET_GP_SEARCH_REQ_BODY", reqParameters)
       commit("SET_GP_SEARCH_RESP_PERF", resp.duration)
-      // console.log("postSearchGP:",resp.data.value);
     });
   },
   postSearchMentalHealthProvidersByCatchment({ commit }) {
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
     axios.get(_api3).then(resp => {
-      // console.log("postSearchMentalHealthProvidersByCatchment:",resp.data)
-      commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHEMNT_RESULTS", resp.data);
+      commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", resp.data);
      });
   },
 
   getSearchMentalHealthProvidersByCatchment({ commit }, { lat, lng }) {
-    console.log("getSearchMentalHealthProvidersByCatchment","lat:",lat,"lng:", lng);
     let _api = `${_api4}?lat=${lat}&lon=${lng}`
-    console.log("getSearchMentalHealthProvidersByCatchment",_api);
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_REQ_API", _api);
 
@@ -188,12 +172,12 @@ const actions = {
     // Add interceptors for the the request/response
     // Request & Response Logging
     axios.interceptors.request.use(request => {
-      console.log('Starting Request', JSON.stringify(request, null, 2))
+      // console.log('Starting Request', JSON.stringify(request, null, 2))
       commit("SET_IAPTP_REQ", request)
       return request
     })
     axios.interceptors.response.use(response => {
-      console.log('Response:', JSON.stringify(response, null, 2))
+      // console.log('Response:', JSON.stringify(response, null, 2))
       commit("SET_IAPTP_RESP", response)
       return response
     })
@@ -204,11 +188,9 @@ const actions = {
       commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", resp.data)
     });
   },
-
   getSearchCatchment({commit}) {
     commit("SET_IAPT_RESULTS", null);
     axios.get(_api3).then(resp => {
-      console.log(resp.data)
       commit("SET_IAPT_RESULTS", resp.data);
      });
   }
