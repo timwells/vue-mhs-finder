@@ -267,15 +267,20 @@ const columns = [
     onFilter: (value, record) => record.Postcode.indexOf(value) === 0,
     sorter: (a, b) => a.Postcode.localeCompare(b.Postcode),
     sortDirections: ["descend", "ascend"],
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => {
+          if(this.searchInput)
+            this.searchInput.focus();
+        });
+      }
+    },
+    scopedSlots: {
+      filterDropdown: "filterDropdown",
+      filterIcon: "filterIcon",
+      customRender: "customRender",
+    },
   }
-  /*{
-    title: 'Latitude',
-    dataIndex: 'Latitude',
-  },
-  {
-    title: 'Longitude',
-    dataIndex: 'Longitude',
-  }*/
 ];
 
 const unique_columns_iapt = [
