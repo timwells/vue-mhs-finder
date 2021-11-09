@@ -18,7 +18,7 @@
               clearFilters,
               column,
             }"
-            style="padding: 8px"
+           style="padding: 8px"
           >
             <a-input
               v-ant-ref="(c) => (searchInput = c)"
@@ -97,6 +97,8 @@
           :row-key="(record) => record.SearchKey"
           :pagination="pagination"
           :loading="loading"
+          :customRow="customRow"
+          class="left-table"
         >
           <div
             slot="filterDropdown"
@@ -121,6 +123,7 @@
                 () => handleSearch(selectedKeys, confirm, column.dataIndex)
               "
             />
+            
             <a-button
               type="primary"
               icon="search"
@@ -176,6 +179,11 @@
             {{text.OrganisationName}} - {{text.ODSCode}}
           </template>
         </a-table>
+      <div class="map_width">
+      <p style="text-align: center;">Map for <b>{{gp_name}}</b> with ODSCode: <b>{{odscode}}</b></p>
+      <!-- <MapContainer :geojson="geojson" v-on:select="selected = $event"></MapContainer> -->
+      <MapContainer :geojson="geojson" v-on:click="geojson = customRow"></MapContainer>
+    </div>
       </div>
     </a-tab-pane>
     <a-tab-pane key="3" tab="Query"> Content of Tab Pane 3 </a-tab-pane>
@@ -184,8 +192,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { TabPane } from "ant-design-vue";
-import JsonViewer from 'vue-json-viewer'
+import MapContainer from './MapContainer.vue'
 
 const columns = [
   {
@@ -294,9 +301,8 @@ const unique_columns_gp = [
 
 export default {
   name: "Explorer",
-  component: {
-    TabPane,
-    JsonViewer
+  components: {
+    MapContainer
   },
   computed: {
     ...mapState("explorer", ["allIAPTResults", "allGPResults"]),
@@ -319,9 +325,42 @@ export default {
       this.concat_columns = array_1.concat(array_2);
       return this.concat_columns
     },
-    filterCCGs: (record) => record.map((relatedOrg) => (relatedOrg.OrganisationName)).join(",")
+    filterCCGs: (record) => record.map((relatedOrg) => (relatedOrg.OrganisationName)).join(","),
+    customRow(record) {
+      return {
+        on: {
+          click: event => {
+            // console.log(event, record.Latitude, record.Longitude);
+            // this.lat = record.Latitude,
+            // this.lon = record.Longitude
+            this.gp_name = record.OrganisationName
+            this.odscode = record.ODSCode
+            var geojson = {
+                type: 'Feature',
+                properties: {
+                  name: 'default object',
+                  quality: 'medium'
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: [
+                       record.Longitude,
+                       record.Latitude
+                  ]
+                }
+              }
+            console.log(event, geojson)
+            this.geojson = geojson
+            // return geojson
+          }
+        }
+      };
+    }
   },
   data: () => ({
+    selected: undefined,
+    gp_name: "",
+    odscode: "",
     data: [],
     columns,
     unique_columns_iapt,
@@ -331,6 +370,7 @@ export default {
     searchText: "",
     searchInput: null,
     searchedColumn: "",
+    geojson: undefined
   }),
   mounted() {
     this.$store.dispatch("explorer/postSearchAllIAPTs");
@@ -344,7 +384,23 @@ export default {
   background-color: rgb(255, 192, 105);
   padding: 0px;
 }
+.cell {
+  border-radius: 4px;
+  background-color: lightgrey;
+}
 
+.cell-map {
+  grid-column: 1;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+
+.map_width {
+  width: 30%;
+  padding-left: 4px;
+  height: 400px;
+  float:right;
+}
 /* table */
 .ant-table table {
   background-color: #ffffff;
@@ -369,5 +425,12 @@ body {
 
 .table-width {
   padding: 10px;
+}
+.left-table{
+  width: 70%;
+  float: left;
+}
+ul>li:last-child {
+    margin-bottom: 8px;
 }
 </style>
