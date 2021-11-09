@@ -2,7 +2,8 @@ import axios from "axios";
 import { API_HEADERS, API2 } from "../../common/common" 
 
 const state = {
-  allIAPTResults : null
+  allIAPTResults : null,
+  allGPResults : null
 };
 
 const getters = {
@@ -14,6 +15,12 @@ const mutations = {
       payload.forEach((e,i) => { e.index = i+1; });
     }
     state.allIAPTResults = payload;
+  },
+  SET_GP_SEARCH_RESULTS: (state, payload) => {
+    if(payload) {
+      payload.forEach((e,i) => { e.index = i+1; });
+    }
+    state.allGPResults = payload;
   }
 }
 
@@ -32,6 +39,21 @@ const actions = {
       commit("SET_IAPT_SEARCH_RESULTS", resp.data.value);
     });
   },
+
+  postSearchAllGPs({commit}) {
+    let reqParameters = {
+        // filter: "OrganisationTypeId eq 'CLI'",
+        filter: "OrganisationTypeId eq 'GPB'",
+        orderby: "OrganisationName",
+        select: "OrganisationName,OrganisationTypeId,Address1,Address2,Address3,City,County,Postcode,ODSCode,SearchKey,CCG",
+        top:2000,
+        count: true
+    };
+    commit("SET_GP_SEARCH_RESULTS", null);
+    axios.post(API2, reqParameters, API_HEADERS).then(resp => {
+      commit("SET_GP_SEARCH_RESULTS", resp.data.value);
+    });
+  }
 };
 
 export default {
