@@ -22,6 +22,7 @@
         </a>
       </div>
       <span class="small">&nbsp;{{version}}</span>
+      <img src="@/assets/data-explorer.png" style="float:right;width:40px;height:40px;cursor:pointer" @click="exploreData()">
     </div>
   </header>
 </template>
@@ -33,8 +34,13 @@ export default {
   name: "Header",
   computed: {
     ...mapState("app", ["version"]),
+  },
+  methods: {
+    exploreData() {
+      this.$router.push({ name: "DataExplorer" });
+    }
   }
-};
+}
 </script>
 
 
