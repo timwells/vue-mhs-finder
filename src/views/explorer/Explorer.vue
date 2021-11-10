@@ -18,7 +18,7 @@
               clearFilters,
               column,
             }"
-           style="padding: 8px"
+            style="padding: 8px"
           >
             <a-input
               v-ant-ref="(c) => (searchInput = c)"
@@ -80,16 +80,13 @@
               {{ text }}
             </template>
           </template>
-          <template
-            slot="RelatedIAPTCCGsRender"
-            slot-scope="record"
-          >
-            {{filterCCGs(record)}}
+          <template slot="RelatedIAPTCCGsRender" slot-scope="record">
+            {{ filterCCGs(record) }}
           </template>
         </a-table>
       </div>
     </a-tab-pane>
-    <a-tab-pane key="2" tab="GP List" force-render>
+    <a-tab-pane key="2" tab="GP's" force-render>
       <div class="table-width">
         <a-table
           :columns="column_concat(columns, unique_columns_gp)"
@@ -172,18 +169,20 @@
               {{ text }}
             </template>
           </template>
-          <template
-            slot="CCGsRender"
-            slot-scope="text"
-          >
-            {{text.OrganisationName}} - {{text.ODSCode}}
+          <template slot="CCGsRender" slot-scope="text">
+            {{ text.OrganisationName }} - {{ text.ODSCode }}
           </template>
         </a-table>
-      <div class="map_width">
-      <p style="text-align: center;">Map for <b>{{gp_name}}</b> with ODSCode: <b>{{odscode}}</b></p>
-      <!-- <MapContainer :geojson="geojson" v-on:select="selected = $event"></MapContainer> -->
-      <MapContainer :geojson="geojson" v-on:click="geojson = customRow"></MapContainer>
-    </div>
+        <div class="map_width">
+          <p style="text-align: center">
+            Map for <b>{{ gp_name }}</b> with ODSCode: <b>{{ odscode }}</b>
+          </p>
+          <!-- <MapContainer :geojson="geojson" v-on:select="selected = $event"></MapContainer> -->
+          <MapContainer
+            :geojson="geojson"
+            v-on:click="geojson = customRow"
+          ></MapContainer>
+        </div>
       </div>
     </a-tab-pane>
     <a-tab-pane key="3" tab="Query"> Content of Tab Pane 3 </a-tab-pane>
@@ -192,7 +191,7 @@
 
 <script>
 import { mapState } from "vuex";
-import MapContainer from './MapContainer.vue'
+import MapContainer from "./MapContainer.vue";
 
 const columns = [
   {
@@ -213,12 +212,14 @@ const columns = [
     dataIndex: "OrganisationName",
     sorter: (a, b) => a.OrganisationName.localeCompare(b.OrganisationName),
     sortDirections: ["descend", "ascend"],
-    onFilter: (value, record) => record.OrganisationName.toString().toLowerCase().includes(value.toLowerCase()),
+    onFilter: (value, record) =>
+      record.OrganisationName.toString()
+        .toLowerCase()
+        .includes(value.toLowerCase()),
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
         setTimeout(() => {
-          if(this.searchInput)
-            this.searchInput.focus();
+          if (this.searchInput) this.searchInput.focus();
         });
       }
     },
@@ -270,8 +271,7 @@ const columns = [
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
         setTimeout(() => {
-          if(this.searchInput)
-            this.searchInput.focus();
+          if (this.searchInput) this.searchInput.focus();
         });
       }
     },
@@ -280,7 +280,7 @@ const columns = [
       filterIcon: "filterIcon",
       customRender: "customRender",
     },
-  }
+  },
 ];
 
 const unique_columns_iapt = [
@@ -288,9 +288,9 @@ const unique_columns_iapt = [
     title: "Related CCGs",
     dataIndex: "RelatedIAPTCCGs",
     scopedSlots: {
-      customRender: "RelatedIAPTCCGsRender"
-   },
-  }
+      customRender: "RelatedIAPTCCGsRender",
+    },
+  },
 ];
 
 const unique_columns_gp = [
@@ -298,23 +298,22 @@ const unique_columns_gp = [
     title: "CCGs",
     dataIndex: "CCG",
     scopedSlots: {
-      customRender: "CCGsRender"
-   },
-  }
+      customRender: "CCGsRender",
+    },
+  },
 ];
-
 
 export default {
   name: "Explorer",
   components: {
-    MapContainer
+    MapContainer,
   },
   computed: {
     ...mapState("explorer", ["allIAPTResults", "allGPResults"]),
   },
   methods: {
     callback(key) {
-      console.log(key);
+      key;
     },
     handleSearch(selectedKeys, confirm, dataIndex) {
       confirm();
@@ -328,39 +327,37 @@ export default {
     column_concat(array_1, array_2) {
       // this.concat_columns = []
       this.concat_columns = array_1.concat(array_2);
-      return this.concat_columns
+      return this.concat_columns;
     },
-    filterCCGs: (record) => record.map((relatedOrg) => (relatedOrg.OrganisationName)).join(","),
+    filterCCGs: (record) =>
+      record.map((relatedOrg) => relatedOrg.OrganisationName).join(","),
     customRow(record) {
       return {
         on: {
-          click: event => {
+          click: (event) => {
             // console.log(event, record.Latitude, record.Longitude);
             // this.lat = record.Latitude,
             // this.lon = record.Longitude
-            this.gp_name = record.OrganisationName
-            this.odscode = record.ODSCode
+            event
+            this.gp_name = record.OrganisationName;
+            this.odscode = record.ODSCode;
+
             var geojson = {
-                type: 'Feature',
-                properties: {
-                  name: 'default object',
-                  quality: 'medium'
-                },
-                geometry: {
-                  type: 'Point',
-                  coordinates: [
-                       record.Longitude,
-                       record.Latitude
-                  ]
-                }
-              }
-            console.log(event, geojson)
-            this.geojson = geojson
-            // return geojson
-          }
-        }
+              type: "Feature",
+              properties: {
+                name: "default object",
+                quality: "medium",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [record.Longitude, record.Latitude],
+              },
+            };
+            this.geojson = geojson;
+          },
+        },
       };
-    }
+    },
   },
   data: () => ({
     selected: undefined,
@@ -375,11 +372,11 @@ export default {
     searchText: "",
     searchInput: null,
     searchedColumn: "",
-    geojson: undefined
+    geojson: undefined,
   }),
   mounted() {
     this.$store.dispatch("explorer/postSearchAllIAPTs");
-    this.$store.dispatch("explorer/postSearchAllGPs");
+    this.$store.dispatch("explorer/postSearchAllGPs",{skip:0});
   },
 };
 </script>
@@ -404,7 +401,7 @@ export default {
   width: 30%;
   padding-left: 4px;
   height: 400px;
-  float:right;
+  float: right;
 }
 /* table */
 .ant-table table {
@@ -431,11 +428,11 @@ body {
 .table-width {
   padding: 10px;
 }
-.left-table{
+.left-table {
   width: 70%;
   float: left;
 }
-ul>li:last-child {
-    margin-bottom: 8px;
+ul > li:last-child {
+  margin-bottom: 8px;
 }
 </style>
