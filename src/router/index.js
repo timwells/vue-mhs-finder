@@ -23,8 +23,8 @@ const routes = [
     component: () => import('../views/FindMentalHealthResults.vue')
   },
   {
-    path: '/explorer',
-    name: 'Explorer',
+    path: '/data-explorer',
+    name: 'DataExplorer',
     component: () => import('../views/explorer/Explorer.vue')
   },
   
