@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_HEADERS, API2 } from "../../common/common" 
+import { ORG_INDEX_HEADERS_API2, ORG_INDEX_SEARCH_API2 } from "../../common/common" 
 
 const state = {
   allIAPTResults : null,
@@ -35,7 +35,7 @@ const actions = {
         count: true
     };
     commit("SET_IAPT_SEARCH_RESULTS", null);
-    axios.post(API2, reqParameters, API_HEADERS).then(resp => {
+    axios.post(ORG_INDEX_SEARCH_API2, reqParameters, ORG_INDEX_HEADERS_API2).then(resp => {
       commit("SET_IAPT_SEARCH_RESULTS", resp.data.value);
     });
   },
@@ -50,7 +50,7 @@ const actions = {
         count: true
     };
     commit("SET_GP_SEARCH_RESULTS", null);
-    axios.post(API2, reqParameters, API_HEADERS).then(resp => {
+    axios.post(ORG_INDEX_SEARCH_API2, reqParameters, ORG_INDEX_HEADERS_API2).then(resp => {
       commit("SET_GP_SEARCH_RESULTS", resp.data.value);
     });
   }
@@ -63,3 +63,4 @@ export default {
   mutations,
   actions
 };
+

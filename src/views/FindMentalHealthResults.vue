@@ -49,8 +49,6 @@
             </div>
           </details>
 
-          <!--json-viewer :value="mentalHealthProviderResults" :expand-depth="4" sort/-->
-
           <div>
             <ol class="nhsuk-list inline-list">
               <li
