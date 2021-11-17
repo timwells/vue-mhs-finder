@@ -49,6 +49,8 @@
             </div>
           </details>
 
+          <!--json-viewer :value="mentalHealthProviderResults" :expand-depth="4" sort/-->
+
           <div>
             <ol class="nhsuk-list inline-list">
               <li
@@ -129,11 +131,11 @@
                           <span v-else class="error-item">Website: <b>?</b></span>
                         </p>
                         <p class="debug">
-                          <span v-if="provider.location">Latitude: <b>{{ provider.location.position.latitude }}</b></span>
+                          <span v-if="provider.location">Latitude: <b>{{ provider.location.coordinates[1] }}</b></span>
                           <span v-else class="error-item">Latitude: <b>?</b></span>                          
                         </p> 
                         <p class="debug">
-                          <span v-if="provider.location">Longitude: <b>{{ provider.location.position.longitude }}</b></span>
+                          <span v-if="provider.location">Longitude: <b>{{ provider.location.coordinates[0] }}</b></span>
                           <span v-else class="error-item">Longitude: <b>?</b></span>                          
                         </p> 
                     </div>

@@ -1,11 +1,8 @@
 import axios from "axios";
-import { API_HEADERS, API2 } from "../../common/common" 
+import { ORG_INDEX_SEARCH_API2, ORG_INDEX_HEADERS_API2, CATCHMENT_SEARCH_API1 } from "../../common/common" 
 
-// https://api.getthedata.com/postcode/SW1A+1AA
 const _api1 = "https://api.getthedata.com/postcode/";
-// const _api2 = "https://api.nhs.uk/service-search/search?api-version=2";
 const _api3 = "https://catchment-area-service.azurewebsites.net/eligibilityregion/fake"
-const _api4 = "https://catchment-area-service.azurewebsites.net/serviceprovider/point"
 
 const state = {
   postCodeResult: null,
@@ -120,20 +117,18 @@ const actions = {
     // Add interceptors for the the request/response
     // Request & Response Logging
     axios.interceptors.request.use(request => {
-      // console.log('Starting Request', JSON.stringify(request, null, 2))
       return request
     })
     axios.interceptors.response.use(response => {
-      // console.log('Response:', JSON.stringify(response, null, 2))
       return response
     })
 
     commit("SET_GP_SEARCH_RESULTS", null);
     commit("SET_GP_SEARCH_TERM", "");
-    axios.post(API2, reqParameters, API_HEADERS).then(resp => {
+    axios.post(ORG_INDEX_SEARCH_API2, reqParameters, ORG_INDEX_HEADERS_API2).then(resp => {
       commit("SET_GP_SEARCH_TERM", search);
       commit("SET_GP_SEARCH_RESULTS", resp.data.value);
-      commit("SET_GP_SEARCH_REQ_API", API2)
+      commit("SET_GP_SEARCH_REQ_API", ORG_INDEX_SEARCH_API2)
       commit("SET_GP_SEARCH_REQ_BODY", reqParameters)
       commit("SET_GP_SEARCH_RESP_PERF", resp.duration)
     });
@@ -146,7 +141,7 @@ const actions = {
   },
 
   getSearchMentalHealthProvidersByCatchment({ commit }, { lat, lng }) {
-    let _api = `${_api4}?lat=${lat}&lon=${lng}`
+    let _api = `${CATCHMENT_SEARCH_API1}&lat=${lat}&lon=${lng}`
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", null);
     commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_REQ_API", _api);
 
@@ -172,16 +167,13 @@ const actions = {
     // Add interceptors for the the request/response
     // Request & Response Logging
     axios.interceptors.request.use(request => {
-      // console.log('Starting Request', JSON.stringify(request, null, 2))
       commit("SET_IAPTP_REQ", request)
       return request
     })
     axios.interceptors.response.use(response => {
-      // console.log('Response:', JSON.stringify(response, null, 2))
       commit("SET_IAPTP_RESP", response)
       return response
     })
-
     axios.get(_api)
     .then(resp => {
       commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESP_PERF", resp.duration)

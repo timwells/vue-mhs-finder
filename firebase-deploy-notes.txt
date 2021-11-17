@@ -55,8 +55,6 @@ Deploy app with:
 Deploy functions with (project root)
 >>> firebase deploy --only functions
 
-
-
 Add Firebase function to existing project
 -----------------------------------------
 https://stackoverflow.com/questions/65845029/add-firebase-cloud-function-in-existing-project
