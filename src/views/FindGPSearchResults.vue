@@ -48,7 +48,7 @@
                 <hr />
                 <div>
                   <h3 class="results__name">
-                    <span role="text">{{ gp.OrganisationName }}</span>
+                    <span role="text"><b>{{ gp.OrganisationName }}</b></span>
                   </h3>
                   <div >
                   <p style="display: inline-block; justify-content: space-between;" v-if="gp.Address1">

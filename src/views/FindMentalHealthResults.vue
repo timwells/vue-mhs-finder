@@ -59,9 +59,9 @@
               >
                 <hr />
                 <div>
-                  <h3 class="results__name">
+                  <h3 class="results__name"><b>
                     <span v-if="provider.organisationName">{{ provider.organisationName }}</span>
-                    <span v-else class="error-item">???</span>
+                    <span v-else class="error-item">???</span></b>
                     </h3>
                   <p class="results__website">
                     <a href="#">Visit website
@@ -79,7 +79,7 @@
                     </a>
                   </p>
 
-                  <p class="results__email">Email:
+                  <p v-if="provider.email" class="results__email">Email:
                     <a href="mailto:a@b.com">
                       <span v-if="provider.email">{{provider.email}}</span>
                       <span v-else class="error-item">?</span>
@@ -116,10 +116,10 @@
                               is one of the {{ mentalHealthProviderResults.length }} eligible IAPT Services available having:</span>
                             <span v-else class="error-item">Organisation: <b>?</b></span>
                         </p>
-                        <p class="debug">
+                        <!--p class="debug">
                           <span v-if="provider.odsCode>0">ODSCode: <b>{{ provider.odsCode }}</b></span>
                           <span v-else class="error-item">ODSCode: <b>?</b></span>
-                        </p>
+                        </p-->
                         <p class="debug">
                           <span v-if="provider.referralURL">referralURL: <b>{{ provider.referralURL }}</b></span>
                           <span v-else class="error-item">referralURL: <b>?</b></span>
