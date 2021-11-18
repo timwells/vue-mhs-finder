@@ -178,20 +178,210 @@
             Map for <b>{{ gp_name }}</b> with ODSCode: <b>{{ odscode }}</b>
           </p>
           <!-- <MapContainer :geojson="geojson" v-on:select="selected = $event"></MapContainer> -->
-          <MapContainer
+          <MapContainer v-if="geojson"
             :geojson="geojson"
             v-on:click="geojson = customRow"
           ></MapContainer>
         </div>
       </div>
     </a-tab-pane>
-    <a-tab-pane key="3" tab="Query"> Content of Tab Pane 3 </a-tab-pane>
+    <a-tab-pane key="3" tab="GP Comparison"> 
+      <div class="tables-container">
+      <div class="left-half">
+        <h2 class="text-style">All GPs from INT environment</h2>
+        <a-table
+          :columns="column_concat(columns, unique_columns_gp)"
+          :data-source="allGPResults"
+          :row-key="(record) => record.SearchKey"
+          :pagination="pagination"
+          :loading="loading"
+          :customRow="customRow"
+        >
+          <div
+            slot="filterDropdown"
+            slot-scope="{
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+              column,
+            }"
+            style="padding: 8px"
+          >
+            <a-input
+              v-ant-ref="(c) => (searchInput = c)"
+              :placeholder="`Search ${column.dataIndex}`"
+              :value="selectedKeys[0]"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="
+                (e) => setSelectedKeys(e.target.value ? [e.target.value] : [])
+              "
+              @pressEnter="
+                () => handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+            />
+            
+            <a-button
+              type="primary"
+              icon="search"
+              size="small"
+              style="width: 90px; margin-right: 8px"
+              @click="
+                () => handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+              >Search</a-button
+            >
+            <a-button
+              size="small"
+              style="width: 90px"
+              @click="() => handleReset(clearFilters)"
+              >Reset</a-button
+            >
+          </div>
+          <a-icon
+            slot="filterIcon"
+            slot-scope="filtered"
+            type="search"
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          />
+          <template
+            slot="customRender"
+            slot-scope="text, record, index, column"
+          >
+            <span v-if="searchText && searchedColumn === column.dataIndex">
+              <template
+                v-for="(fragment, i) in text
+                  .toString()
+                  .split(
+                    new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')
+                  )"
+              >
+                <mark
+                  v-if="fragment.toLowerCase() === searchText.toLowerCase()"
+                  :key="i"
+                  class="highlight"
+                  >{{ fragment }}</mark
+                >
+                <template v-else>{{ fragment }}</template>
+              </template>
+            </span>
+            <template v-else>
+              {{ text }}
+            </template>
+          </template>
+          <template slot="CCGsRender" slot-scope="text">
+            {{ text.OrganisationName }} - {{ text.ODSCode }}
+          </template>
+        </a-table>
+      </div>
+      <div class="right-half">
+        <h2 class="text-style">All GPs from LIVE environment</h2>
+        <a-table
+          :columns="column_concat(columns, unique_columns_gp)"
+          :data-source="allGPResultsPublic"
+          :row-key="(record) => record.SearchKey"
+          :pagination="pagination"
+          :loading="loading"
+          :customRow="customRow"
+        >
+          <div
+            slot="filterDropdown"
+            slot-scope="{
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+              column,
+            }"
+            style="padding: 8px"
+          >
+            <a-input
+              v-ant-ref="(c) => (searchInput = c)"
+              :placeholder="`Search ${column.dataIndex}`"
+              :value="selectedKeys[0]"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="
+                (e) => setSelectedKeys(e.target.value ? [e.target.value] : [])
+              "
+              @pressEnter="
+                () => handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+            />
+            
+            <a-button
+              type="primary"
+              icon="search"
+              size="small"
+              style="width: 90px; margin-right: 8px"
+              @click="
+                () => handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+              >Search</a-button
+            >
+            <a-button
+              size="small"
+              style="width: 90px"
+              @click="() => handleReset(clearFilters)"
+              >Reset</a-button
+            >
+          </div>
+          <a-icon
+            slot="filterIcon"
+            slot-scope="filtered"
+            type="search"
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          />
+          <template
+            slot="customRender"
+            slot-scope="text, record, index, column"
+          >
+            <span v-if="searchText && searchedColumn === column.dataIndex">
+              <template
+                v-for="(fragment, i) in text
+                  .toString()
+                  .split(
+                    new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')
+                  )"
+              >
+                <mark
+                  v-if="fragment.toLowerCase() === searchText.toLowerCase()"
+                  :key="i"
+                  class="highlight"
+                  >{{ fragment }}</mark
+                >
+                <template v-else>{{ fragment }}</template>
+              </template>
+            </span>
+            <template v-else>
+              {{ text }}
+            </template>
+          </template>
+          <template slot="CCGsRender" slot-scope="text">
+            {{ text.OrganisationName }} - {{ text.ODSCode }}
+          </template>
+        </a-table>
+      </div>
+      </div>
+    </a-tab-pane>
+    <a-tab-pane key="4" tab="Query"> Content of Tab Pane 4 
+
+
+      <div>
+        <!-- It will take some time to run - the JSONs are huge -->
+      <!-- <vue-json-compare :oldData="allGPResults" :newData="allGPResultsPublic"></vue-json-compare> -->
+    </div>
+    </a-tab-pane>
+    
   </a-tabs>
 </template>
 
 <script>
+// import vueJsonCompare from 'vue-json-compare';
+// import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 import { mapState } from "vuex";
 import MapContainer from "./MapContainer.vue";
+import json from "@/assets/all_gps_int_api.json";
+import json2 from "@/assets/all_gps_public_api.json";
 
 const columns = [
   {
@@ -307,9 +497,11 @@ export default {
   name: "Explorer",
   components: {
     MapContainer,
+    // vueJsonCompare,
+    // PulseLoader
   },
   computed: {
-    ...mapState("explorer", ["allIAPTResults", "allGPResults"]),
+    ...mapState("explorer", ["allIAPTResults"]),
   },
   methods: {
     callback(key) {
@@ -361,6 +553,8 @@ export default {
   },
   data: () => ({
     selected: undefined,
+    allGPResults: json,
+    allGPResultsPublic: json2,
     gp_name: "",
     odscode: "",
     data: [],
@@ -376,8 +570,15 @@ export default {
   }),
   mounted() {
     this.$store.dispatch("explorer/postSearchAllIAPTs");
-    this.$store.dispatch("explorer/postSearchAllGPs",{skip:0});
+    // this.$store.dispatch("explorer/postSearchAllGPs",{skip:0});
+    if(json) {
+          json.forEach((e,i) => { e.index = i+1; });
+      }
+    if(json2) {
+        json2.forEach((e,i) => { e.index = i+1; });
+      }
   },
+  
 };
 </script>
 
@@ -420,6 +621,21 @@ export default {
   height: 5px;
   padding: 4px;
 }
+.tables-container{
+  display:flex;
+}
+
+.left-half{
+  margin-right: 7px; 
+  overflow-x: auto;
+  height: 800px;
+}
+
+.right-half{
+  margin-left: 7px; 
+  overflow-x: auto;
+  height: 800px;
+}
 
 body {
   background-color: #ffffff;
@@ -434,5 +650,9 @@ body {
 }
 ul > li:last-child {
   margin-bottom: 8px;
+}
+
+.text-style {
+    text-align: center;
 }
 </style>
