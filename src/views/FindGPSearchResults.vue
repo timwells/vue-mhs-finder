@@ -66,7 +66,6 @@
                   <p style="display: inline-block; justify-content: space-between;" v-if="gp.County">
                        {{gp.County}},
                   </p>
-
                   <p style="display: inline-block; justify-content: space-between;" v-if="gp.Postcode">
                        {{gp.Postcode}}
                   </p>

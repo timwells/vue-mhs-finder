@@ -91,7 +91,7 @@ const actions = {
         searchFields: "OrganisationName,OrganisationAliases/OrganisationAlias,Address1,Address2,Address3",
         search: search,
         select: "OrganisationName,Address1,Address2,Address3,City,County,Postcode,Latitude,Longitude,ODSCode,SearchKey",
-        top: 25,
+        top: 20,
         skip: 0,
         count: true
     };
