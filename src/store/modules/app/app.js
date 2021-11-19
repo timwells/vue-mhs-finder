@@ -1,4 +1,4 @@
-const _version = "mhs-mock-demo-1.1";
+const _version = "mhs-mock-demo-1.2";
 const state = {
   version: _version,
 };
