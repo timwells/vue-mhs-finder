@@ -84,6 +84,9 @@
           <template slot="RelatedIAPTCCGsRender" slot-scope="record">
             {{ filterCCGs(record) }}
           </template>
+           <template slot="Email" slot-scope="record">
+            {{ filterEmails(record) }}
+          </template>
             <template slot="Services" slot-scope="record">
               <li v-for="item in filterServices(record)" :key="item">
                 <a v-if="item.includes('http')" :href="item">Link</a>
@@ -431,7 +434,7 @@ const columns = [
     dataIndex: "OrganisationTypeId",
     onFilter: (value, record) => record.OrganisationTypeId.indexOf(value) === 0,
     sorter: (a, b) => a.OrganisationTypeId.localeCompare(b.OrganisationTypeId),
-    sortDirections: ["descend", "ascend"],
+    sortDirections: ["descend", "ascend"]
   },
   {
     title: "Address1",
@@ -448,10 +451,31 @@ const columns = [
   {
     title: "Email",
     dataIndex: "Email",
+    onFilter: (value, record) => record.Email.indexOf(value) === 0,
+    // Emails contain null values, a pice of code needs to be writtten to support sorting
+    // sorter: (a, b) => {
+    //   if (a.Email != null & b.Email != null){
+    //     a.Email.localeCompare(b.Email)
+    //   }
+    // },
+    // sortDirections: ["descend", "ascend"],
+    // scopedSlots: {
+    //   customRender: "Email",
+    // }
   },
   {
     title: "Website",
     dataIndex: "Website",
+    onFilter: (value, record) => record.Website.indexOf(value) === 0,
+    sorter: (a, b) => a.Website.localeCompare(b.Website),
+    sortDirections: ["descend", "ascend"],
+  },
+  {
+    title: "Phone",
+    dataIndex: "Phone",
+    onFilter: (value, record) => record.Phone.indexOf(value) === 0,
+    sorter: (a, b) => a.Phone.localeCompare(b.Phone),
+    sortDirections: ["descend", "ascend"],
   },
   {
     title: "Services",
@@ -545,6 +569,12 @@ export default {
     },
     filterCCGs: (record) =>
       record.map((relatedOrg) => relatedOrg.OrganisationName).join(","),
+    filterEmails: (record) =>{
+      if(record === null){
+        record = "---"
+      }
+      return record
+    },
     filterServices: (record) => {
       for(const item in record){
         if(record[item]["ServiceCode"] === "SRV0339"){

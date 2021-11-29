@@ -30,7 +30,7 @@ const actions = {
         // filter: "OrganisationTypeId eq 'CLI'",
         filter: "(Services/any(l: l/ServiceCode eq 'SRV0339')) and (OrganisationTypeId ne 'TRU')",
         orderby: "OrganisationName",
-        select: "OrganisationName,Email,Website,OrganisationTypeId,Address1,Address2,Address3,City,County,Postcode,Latitude,Longitude,ODSCode,SearchKey,RelatedIAPTCCGs,Services",
+        select: "OrganisationName,Email,Website,Phone,OrganisationTypeId,Address1,Address2,Address3,City,County,Postcode,Latitude,Longitude,ODSCode,SearchKey,RelatedIAPTCCGs,Services",
         top:500,
         count: true
     };
