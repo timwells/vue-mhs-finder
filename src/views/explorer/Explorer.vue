@@ -8,6 +8,7 @@
           :row-key="(record) => record.SearchKey"
           :pagination="pagination"
           :loading="loading"
+          :scroll="{ x: 2700}"
         >
           <div
             slot="filterDropdown"
@@ -83,6 +84,12 @@
           <template slot="RelatedIAPTCCGsRender" slot-scope="record">
             {{ filterCCGs(record) }}
           </template>
+            <template slot="Services" slot-scope="record">
+              <li v-for="item in filterServices(record)" :key="item">
+                <a v-if="item.includes('http')" :href="item">Link</a>
+                <pre class="pre-style" v-else>{{ item }} </pre>
+              </li>
+            </template>
         </a-table>
       </div>
     </a-tab-pane>
@@ -439,6 +446,21 @@ const columns = [
     dataIndex: "Address3",
   },
   {
+    title: "Email",
+    dataIndex: "Email",
+  },
+  {
+    title: "Website",
+    dataIndex: "Website",
+  },
+  {
+    title: "Services",
+    dataIndex: "Services",
+    scopedSlots: {
+      customRender: "Services",
+    }
+  },
+  {
     title: "City",
     dataIndex: "City",
     onFilter: (value, record) => record.City.indexOf(value) === 0,
@@ -523,6 +545,30 @@ export default {
     },
     filterCCGs: (record) =>
       record.map((relatedOrg) => relatedOrg.OrganisationName).join(","),
+    filterServices: (record) => {
+      for(const item in record){
+        if(record[item]["ServiceCode"] === "SRV0339"){
+          var all_returns = []
+          var contacts_details = ""
+          var website_details = ""
+          for (const i in record[item]["Contacts"]){
+            // console.log(record[item]["Contacts"][i]["ContactValue"])
+            if (record[item]["Contacts"][i]["ContactValue"] !== null){
+              if(record[item]["Contacts"][i]["ContactMethodType"] == "Website"){
+                website_details += record[item]["Contacts"][i]["ContactValue"]
+              }
+              else{
+                contacts_details += record[item]["Contacts"][i]["ContactMethodType"] + ': ' + record[item]["Contacts"][i]["ContactValue"] + '\n'
+              }
+            }
+          }
+          contacts_details += "Service Code: " + record[item]["ServiceCode"]
+          all_returns.push(contacts_details)
+          all_returns.push(website_details)
+          return all_returns
+        }
+      }
+    },
     customRow(record) {
       return {
         on: {
@@ -654,5 +700,11 @@ ul > li:last-child {
 
 .text-style {
     text-align: center;
+}
+
+.pre-style {
+  /* overflow: hidden; */
+  overflow-wrap: break-word;
+  font-size: 10px;
 }
 </style>
