@@ -133,7 +133,7 @@ export default {
   },
   methods: {
     gpLinkClicked(org, lat, lng) {
-      console.log("gpLinkClicked", org, lat, lng);
+      // console.log("gpLinkClicked", org, lat, lng);
       this.bLoading = true;
       this.$store.dispatch("search/getSearchMentalHealthProvidersByCatchment", {
           lat: lat,
