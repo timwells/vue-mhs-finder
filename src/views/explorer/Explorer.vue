@@ -87,11 +87,19 @@
            <template slot="Email" slot-scope="record">
             {{ filterEmails(record) }}
           </template>
-            <template slot="Services" slot-scope="record">
-              <li v-for="item in filterServices(record)" :key="item">
-                <a v-if="item.includes('http')" :href="item">Link</a>
-                <pre class="pre-style" v-else>{{ item }} </pre>
-              </li>
+            <template slot="RefPhone" slot-scope="record">
+                {{filterServices(record, 'Telephone')}}
+            </template>
+          <template slot="RefLink" slot-scope="record">
+                <a v-if="filterServices(record, 'Website').includes('http')" class="navigation-item__link_text" :href="filterServices(record, 'Website')">{{filterServices(record, 'Website')}}</a>
+                <p class="navigation-item__link_text" v-else>{{filterServices(record, 'Website')}}</p>
+            </template>
+          <template slot="Website" slot-scope="record">
+                <a v-if="record.includes('http')" class="navigation-item__link_text" :href="record">{{record}}</a>
+                <p class="navigation-item__link_text" v-else>{{record}}</p>
+            </template>
+          <template slot="RefEmail" slot-scope="record">
+                {{filterServices(record, 'Email')}}
             </template>
         </a-table>
       </div>
@@ -455,44 +463,39 @@ const columns = [
     width: 100
   },
   {
-    title: "Email",
-    dataIndex: "Email",
-    onFilter: (value, record) => record.Email.indexOf(value) === 0,
-    // Emails contain null values, a pice of code needs to be writtten to support sorting
-    // sorter: (a, b) => {
-    //   if (a.Email != null & b.Email != null){
-    //     a.Email.localeCompare(b.Email)
-    //   }
-    // },
-    // sortDirections: ["descend", "ascend"],
-    // scopedSlots: {
-    //   customRender: "Email",
-    // }
-    width: 160
-  },
-  {
     title: "Website",
     dataIndex: "Website",
     onFilter: (value, record) => record.Website.indexOf(value) === 0,
     sorter: (a, b) => a.Website.localeCompare(b.Website),
     sortDirections: ["descend", "ascend"],
-    width: 100
-  },
-  {
-    title: "Phone",
-    dataIndex: "Phone",
-    onFilter: (value, record) => record.Phone.indexOf(value) === 0,
-    sorter: (a, b) => a.Phone.localeCompare(b.Phone),
-    sortDirections: ["descend", "ascend"],
+    scopedSlots: {
+      customRender: "Website",
+    },
     width: 120
   },
   {
-    title: "Services",
+    title: "Ref Email",
     dataIndex: "Services",
     scopedSlots: {
-      customRender: "Services",
+      customRender: "RefEmail",
     },
-    width: 80
+    width: 160
+  },
+  {
+    title: "Ref Link",
+    dataIndex: "Services",
+    scopedSlots: {
+      customRender: "RefLink",
+    },
+    width: 120
+  },
+  {
+    title: "Ref Phone",
+    dataIndex: "Services",
+    scopedSlots: {
+      customRender: "RefPhone",
+    },
+    width: 120
   },
   {
     title: "City",
@@ -588,27 +591,19 @@ export default {
       }
       return record
     },
-    filterServices: (record) => {
+    filterServices: (record, whatDoYouNeed) => {
       for(const item in record){
         if(record[item]["ServiceCode"] === "SRV0339"){
-          var all_returns = []
-          var contacts_details = ""
-          var website_details = ""
+          var details = ""
           for (const i in record[item]["Contacts"]){
-            // console.log(record[item]["Contacts"][i]["ContactValue"])
-            if (record[item]["Contacts"][i]["ContactValue"] !== null){
-              if(record[item]["Contacts"][i]["ContactMethodType"] == "Website"){
-                website_details += record[item]["Contacts"][i]["ContactValue"]
+            if (record[item]["Contacts"][i]["ContactValue"] !== null && record[item]["Contacts"][i]["ContactMethodType"] == whatDoYouNeed){
+                details = record[item]["Contacts"][i]["ContactValue"]
               }
-              else{
-                contacts_details += record[item]["Contacts"][i]["ContactMethodType"] + ': ' + record[item]["Contacts"][i]["ContactValue"] + '\n'
-              }
-            }
           }
-          contacts_details += "Service Code: " + record[item]["ServiceCode"]
-          all_returns.push(contacts_details)
-          all_returns.push(website_details)
-          return all_returns
+          if(details === ""){
+                details = "Empty"
+          }
+          return details
         }
       }
     },
@@ -750,4 +745,13 @@ ul > li:last-child {
   overflow-wrap: break-word;
   font-size: 10px;
 }
+
+.navigation-item__link_text {
+  width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+ }
 </style>
