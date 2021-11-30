@@ -374,8 +374,6 @@
       </div>
     </a-tab-pane>
     <a-tab-pane key="4" tab="Query"> Content of Tab Pane 4 
-
-
       <div>
         <!-- It will take some time to run - the JSONs are huge -->
       <!-- <vue-json-compare :oldData="allGPResults" :newData="allGPResultsPublic"></vue-json-compare> -->
@@ -397,15 +395,18 @@ const columns = [
   {
     title: "#",
     dataIndex: "index",
+    width: 40
   },
   {
     title: "Key",
     dataIndex: "SearchKey",
     sorter: true,
+    width: 100
   },
   {
     title: "ODS",
     dataIndex: "ODSCode",
+    width: 100
   },
   {
     title: "Name",
@@ -428,25 +429,30 @@ const columns = [
       filterIcon: "filterIcon",
       customRender: "customRender",
     },
+    width: 180
   },
   {
-    title: "Type",
+    title: "T",
     dataIndex: "OrganisationTypeId",
     onFilter: (value, record) => record.OrganisationTypeId.indexOf(value) === 0,
     sorter: (a, b) => a.OrganisationTypeId.localeCompare(b.OrganisationTypeId),
-    sortDirections: ["descend", "ascend"]
+    sortDirections: ["descend", "ascend"],
+    width: 60
   },
   {
     title: "Address1",
     dataIndex: "Address1",
+    width: 100
   },
   {
     title: "Address2",
     dataIndex: "Address2",
+    width: 100
   },
   {
     title: "Address3",
     dataIndex: "Address3",
+    width: 100
   },
   {
     title: "Email",
@@ -462,6 +468,7 @@ const columns = [
     // scopedSlots: {
     //   customRender: "Email",
     // }
+    width: 160
   },
   {
     title: "Website",
@@ -469,6 +476,7 @@ const columns = [
     onFilter: (value, record) => record.Website.indexOf(value) === 0,
     sorter: (a, b) => a.Website.localeCompare(b.Website),
     sortDirections: ["descend", "ascend"],
+    width: 100
   },
   {
     title: "Phone",
@@ -476,13 +484,15 @@ const columns = [
     onFilter: (value, record) => record.Phone.indexOf(value) === 0,
     sorter: (a, b) => a.Phone.localeCompare(b.Phone),
     sortDirections: ["descend", "ascend"],
+    width: 120
   },
   {
     title: "Services",
     dataIndex: "Services",
     scopedSlots: {
       customRender: "Services",
-    }
+    },
+    width: 80
   },
   {
     title: "City",
@@ -490,6 +500,7 @@ const columns = [
     onFilter: (value, record) => record.City.indexOf(value) === 0,
     sorter: (a, b) => a.City.localeCompare(b.City),
     sortDirections: ["descend", "ascend"],
+    width: 80
   },
   {
     title: "County",
@@ -497,6 +508,7 @@ const columns = [
     onFilter: (value, record) => record.County.indexOf(value) === 0,
     sorter: (a, b) => a.County.localeCompare(b.County),
     sortDirections: ["descend", "ascend"],
+    width: 100
   },
   {
     title: "Postcode",
@@ -516,6 +528,7 @@ const columns = [
       filterIcon: "filterIcon",
       customRender: "customRender",
     },
+    width: 120
   },
 ];
 
@@ -637,7 +650,7 @@ export default {
     columns,
     unique_columns_iapt,
     unique_columns_gp,
-    pagination: { pageSize: 15 },
+    pagination: { pageSize: 10 },
     loading: false,
     searchText: "",
     searchInput: null,
