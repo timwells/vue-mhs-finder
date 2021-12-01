@@ -91,11 +91,11 @@
                 {{filterServices(record, 'Telephone')}}
             </template>
           <template slot="RefLink" slot-scope="record">
-                <a v-if="filterServices(record, 'Website').includes('http')" class="navigation-item__link_text" :href="filterServices(record, 'Website')">{{filterServices(record, 'Website')}}</a>
+                <a v-if="filterServices(record, 'Website').includes('http')" class="navigation-item__link_text" target="_blank" :href="filterServices(record, 'Website')">{{filterServices(record, 'Website')}}</a>
                 <p class="navigation-item__link_text" v-else>{{filterServices(record, 'Website')}}</p>
             </template>
           <template slot="Website" slot-scope="record">
-                <a v-if="record.includes('http')" class="navigation-item__link_text" :href="record">{{record}}</a>
+                <a v-if="record.includes('http')" class="navigation-item__link_text" target="_blank" :href="record">{{record}}</a>
                 <p class="navigation-item__link_text" v-else>{{record}}</p>
             </template>
           <template slot="RefEmail" slot-scope="record">
