@@ -177,7 +177,7 @@ const actions = {
     axios.get(_api)
     .then(resp => {
       commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESP_PERF", resp.duration)
-      commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", resp.data)
+      commit("SET_SEARCH_MENTAL_HEALTH_PROVIDERS_BY_CATCHMENT_RESULTS", resp.data.values)
     });
   },
   getSearchCatchment({commit}) {
